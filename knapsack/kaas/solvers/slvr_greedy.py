@@ -3,7 +3,7 @@ from kaas.solvers.slvr_base import SolverBase
 
 class SolverGreedy(SolverBase):
     """
-    Solver class for Greedy alforithm
+    Solver class for Greedy algorithm
     """
 
     def __init__(self, *args, w_offset=0., v_offset=0., fractional=False, **kwargs):

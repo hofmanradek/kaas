@@ -4,7 +4,7 @@ import os
 from kaas.solvers.datastore import Datastore
 from kaas.solvers.slvr_greedy import SolverGreedy
 from kaas.solvers.slvr_dp import SolverDynamicRecurrent
-
+from kaas.solvers.slvr_bb import BranchAndBoundSolver
 
 THIS_MODULE_PATH = os.path.dirname(__file__)
 TEST_FILE_PATH = os.path.join(THIS_MODULE_PATH, "data", "ks_22.json")
@@ -46,7 +46,7 @@ class TestSolvers(unittest.TestCase):
     def test_greedy_non_fractional(self):
         "test of Greedy solver - non fractional version (0/1 Knapsack)"
 
-        sgreedy = SolverGreedy(self.ds.capacity, self.ds, fractional=False)
+        sgreedy = SolverGreedy(self.ds, fractional=False)
 
         #test of correct initialization
         assert sgreedy.fract == False
@@ -57,7 +57,7 @@ class TestSolvers(unittest.TestCase):
         assert sgreedy.tweight == 396
         assert sgreedy.tvalue == 1030
 
-    def test_greedy_non_fractional(self):
+    def test_greedy_fractional(self):
         "test of Greedy solver - fractional version"
 
         sgreedy = SolverGreedy(self.ds, fractional=True)
@@ -71,9 +71,7 @@ class TestSolvers(unittest.TestCase):
         assert sgreedy.tweight == 400
         assert sgreedy.tvalue == 1035.2173913043478
 
-
-
-    def test_dp(self):
+    def test_recurrent_dynamic_programming(self):
         "test of dynamic programming solver"
 
         sdpr = SolverDynamicRecurrent(self.ds)
@@ -82,6 +80,22 @@ class TestSolvers(unittest.TestCase):
         assert sdpr.ds.nitems == 22
 
         #test of solver
-        sdpr.solve()
+        sdpr.solve(lru_cache_maxsize=None)
         assert sdpr.tweight == 396
         assert sdpr.tvalue == 1030
+
+    def test_branch_and_bound(self):
+        "test of Branch&Bound implementation using fractional greedy relaxation"
+
+        sbb = BranchAndBoundSolver(self.ds)
+
+        #test of correct initialization
+        assert sbb.ds.nitems == 22
+
+        #test of solver
+        sbb.solve()
+        assert sbb.tweight == 396
+        assert sbb.tvalue == 1030
+
+
+

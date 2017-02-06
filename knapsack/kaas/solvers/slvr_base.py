@@ -8,7 +8,6 @@ class SolverBase(metaclass=ABCMeta):
 
     def __init__(self, datastore):
         self.ds = datastore  # datastore object with all items
-        self.c = self.ds.capacity  # total capacity of the knapsack
         self.knapsack = []  # items included in knapsack
         self.tvalue = 0.  # total value
         self.tweight = 0.  # total weight
