@@ -5,9 +5,10 @@ class SolverBase(metaclass=ABCMeta):
     """
     Base solver clase defining a common interface for all types of Knapsack solvers.
     """
-    def __init__(self, capacity, datastore):
-        self.c = capacity  # total capacity of the knapsack
+
+    def __init__(self, datastore):
         self.ds = datastore  # datastore object with all items
+        self.c = self.ds.capacity  # total capacity of the knapsack
         self.knapsack = []  # items included in knapsack
         self.tvalue = 0.  # total value
         self.tweight = 0.  # total weight

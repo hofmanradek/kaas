@@ -3,6 +3,7 @@ import os
 
 from kaas.solvers.datastore import Datastore
 from kaas.solvers.slvr_greedy import SolverGreedy
+from kaas.solvers.slvr_dp import SolverDynamicRecurrent
 
 
 THIS_MODULE_PATH = os.path.dirname(__file__)
@@ -42,8 +43,8 @@ class TestSolvers(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_greedy(self):
-        "test of Greedy solver"
+    def test_greedy_non_fractional(self):
+        "test of Greedy solver - non fractional version (0/1 Knapsack)"
 
         sgreedy = SolverGreedy(self.ds.capacity, self.ds, fractional=False)
 
@@ -56,5 +57,31 @@ class TestSolvers(unittest.TestCase):
         assert sgreedy.tweight == 396
         assert sgreedy.tvalue == 1030
 
+    def test_greedy_non_fractional(self):
+        "test of Greedy solver - fractional version"
+
+        sgreedy = SolverGreedy(self.ds, fractional=True)
+
+        #test of correct initialization
+        assert sgreedy.fract == True
+        assert sgreedy.ds.nitems == 22
+
+        #test of solver
+        sgreedy.solve()
+        assert sgreedy.tweight == 400
+        assert sgreedy.tvalue == 1035.2173913043478
 
 
+
+    def test_dp(self):
+        "test of dynamic programming solver"
+
+        sdpr = SolverDynamicRecurrent(self.ds)
+
+        #test of correct initialization
+        assert sdpr.ds.nitems == 22
+
+        #test of solver
+        sdpr.solve()
+        assert sdpr.tweight == 396
+        assert sdpr.tvalue == 1030
