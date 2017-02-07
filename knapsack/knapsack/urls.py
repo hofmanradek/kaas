@@ -16,6 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+import kaas.api.endpoints as endpoints
+
+API_PREFIX = 'api/v1/'
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^{}solve/'.format(API_PREFIX), endpoints.SolveKnapsackAPI.as_view(), name='api_solve_knapsack'),
+    url(r'^{}task/(?P<task_id>[-a-z0-9]+)/'.format(API_PREFIX), endpoints.TaskInfoAPI.as_view(), name='api_task_info'),
+
+
+
+
 ]
