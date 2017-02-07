@@ -1,10 +1,39 @@
 from functools import lru_cache
+import sys; sys.setrecursionlimit(10000)
+#import numpy
+
 from kaas.solvers.slvr_base import SolverBase
+
+
+class SolverDynamic(SolverBase):
+    """
+    Solver class for Dynamic programming
+    """
+    def solve(self):
+        t = [[0 for i in range(self.ds.capacity+1)] for j in range(self.ds.nitems+1)]  #numpy.zeros((self.ds.nitems+1, self.ds.capacity))
+
+        for m in range(1, self.ds.nitems+1):
+            for n in range(0, self.ds.capacity+1):
+                item = self.ds.items[m-1]
+                if item.weight <= n:
+                    t[m][n] = max(t[m-1][n], item.value+t[m-1][n-item.weight])
+                else:
+                    t[m][n] = t[m-1][n]
+
+        #backward run to collect results
+        n = self.ds.capacity
+        for m in range(self.ds.nitems, 0, -1):
+            if t[m][n] != t[m-1][n]:
+                item = self.ds.items[m-1]
+                n -= item.weight
+                self.knapsack.append(item)
+                self.tvalue += item.value
+                self.tweight += item.weight
 
 
 class SolverDynamicRecurrent(SolverBase):
     """
-    Solver class for Greedy algorithm
+    Solver class for Dynamic programming using recurrent formula
     """
 
     def solve(self, lru_cache_maxsize=None):
@@ -32,7 +61,7 @@ class SolverDynamicRecurrent(SolverBase):
             if dp(m, n) != dp(m-1, n):
                 item = self.ds.items[m-1]
                 n -= item.weight
-                self.knapsack.append(item.name)
+                self.knapsack.append(item)
                 self.tvalue += item.value
                 self.tweight += item.weight
 

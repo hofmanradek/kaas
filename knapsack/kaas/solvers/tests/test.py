@@ -3,7 +3,7 @@ import os
 
 from kaas.solvers.datastore import Datastore
 from kaas.solvers.slvr_greedy import SolverGreedy
-from kaas.solvers.slvr_dp import SolverDynamicRecurrent
+from kaas.solvers.slvr_dp import SolverDynamicRecurrent, SolverDynamic
 from kaas.solvers.slvr_bb import BranchAndBoundSolver
 
 THIS_MODULE_PATH = os.path.dirname(__file__)
@@ -70,6 +70,19 @@ class TestSolvers(unittest.TestCase):
         sgreedy.solve()
         assert sgreedy.tweight == 400
         assert sgreedy.tvalue == 1035.2173913043478
+
+    def test_dynamic_programming(self):
+        "test of dynamic programming solver"
+
+        sdpr = SolverDynamic(self.ds)
+
+        #test of correct initialization
+        assert sdpr.ds.nitems == 22
+
+        #test of solver
+        sdpr.solve()
+        assert sdpr.tweight == 396
+        assert sdpr.tvalue == 1030
 
     def test_recurrent_dynamic_programming(self):
         "test of dynamic programming solver"
