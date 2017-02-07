@@ -6,12 +6,10 @@ class BranchAndBoundSolver(SolverBase):
     """
     class of Branch and Bound Knapsack solver
     """
-
     class Node(object):
         """
         Class of node of the tree built during Branch&Bound solution
         """
-
         def __init__(self, weight, level, value, datastore, knapsack):
             self.cumul_weight = weight
             self.cumul_value = value
@@ -27,7 +25,6 @@ class BranchAndBoundSolver(SolverBase):
             // an upper bound on maximum profit.
             :return: upper bound given by Greedy fractional solver
             """
-
             sgreedy = SolverGreedy(self.ds, fractional=True)
             sgreedy.solve(level=self.level, w_offset=self.cumul_weight, v_offset=self.cumul_value)
             return sgreedy.tvalue
@@ -36,7 +33,6 @@ class BranchAndBoundSolver(SolverBase):
             """
             Procced to the next level from the given node
             """
-
             ret = []  # empty list for return values
 
             if (self.ds.items[self.level].weight + self.cumul_weight <= self.ds.capacity):
@@ -45,7 +41,7 @@ class BranchAndBoundSolver(SolverBase):
                                 self.level + 1,
                                 item.value + self.cumul_value,
                                 self.ds,
-                                self.knapsack+[self.level]))
+                                self.knapsack+[self.ds.items[self.level]]))
 
             #right child we create always - we try to omit the item
             ret.append(BranchAndBoundSolver.Node(self.cumul_weight, self.level + 1, \
@@ -53,7 +49,7 @@ class BranchAndBoundSolver(SolverBase):
             return ret
 
     def solve(self):
-        root = self.Node(0, 0, 0,self.ds, [])
+        root = self.Node(0, 0, 0, self.ds, [])
         current_node = root
         nodes_to_go = []
 

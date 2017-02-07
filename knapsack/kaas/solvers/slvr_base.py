@@ -14,7 +14,11 @@ class SolverBase(metaclass=ABCMeta):
 
     @abstractmethod
     def solve(self):
-        "this method must be implemented"
+        """
+        this method must be implemented for various solver types
+        saves total value of items in self.tvalue, total weight in
+        self.tweight ans selected items in self.knapsack
+        """
 
     def get_items_indices(self):
         "provides list of items in the knapsack"
@@ -27,3 +31,7 @@ class SolverBase(metaclass=ABCMeta):
     def get_total_weight(self):
         "returns overall weight of included items"
         return sum([i.weight for i in self.knapsack])
+
+    def get_item_json(self):
+        "retuns resulting items in json format"
+        return {'items': [i.to_json() for i in self.knapsack]}

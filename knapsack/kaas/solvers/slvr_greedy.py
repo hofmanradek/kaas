@@ -5,10 +5,8 @@ class SolverGreedy(SolverBase):
     """
     Solver class for Greedy algorithm
     """
-
     def __init__(self, *args, w_offset=0., v_offset=0., fractional=False, **kwargs):
         "this solver takes more inputs than the rest, we have to extend constructor"
-
         super(self.__class__, self).__init__(*args, **kwargs)
 
         self.fract = fractional  # do we assume fractional Greegy? (good for relaxation in Branc and Bound)
@@ -26,7 +24,6 @@ class SolverGreedy(SolverBase):
         :param v_offset: offset on overall value
         :return:
         """
-
         self.tweight = w_offset
         self.tvalue = v_offset
 

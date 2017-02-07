@@ -1,6 +1,5 @@
 from functools import lru_cache
-import sys; sys.setrecursionlimit(10000)
-#import numpy
+import sys; sys.setrecursionlimit(10000)  # well...:)
 
 from kaas.solvers.slvr_base import SolverBase
 
@@ -35,13 +34,11 @@ class SolverDynamicRecurrent(SolverBase):
     """
     Solver class for Dynamic programming using recurrent formula
     """
-
     def solve(self, lru_cache_maxsize=None):
         """
         Recurrent Dynamic Programing (DP) solution algorithm of Knapsack problem
         :param lru_cache_maxsize: maximum number of entries store in cache (None = no limit)
         """
-
         @lru_cache(maxsize=lru_cache_maxsize)
         def dp(m, n):
             "recurrent function for DP"

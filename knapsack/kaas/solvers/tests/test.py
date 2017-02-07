@@ -98,7 +98,7 @@ class TestSolvers(unittest.TestCase):
         assert sdpr.tvalue == 1030
 
     def test_branch_and_bound(self):
-        "test of Branch&Bound implementation using fractional greedy relaxation"
+        "test of Branch&Bound implementation using fractional Greedy relaxation"
 
         sbb = BranchAndBoundSolver(self.ds)
 

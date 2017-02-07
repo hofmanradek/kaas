@@ -22,6 +22,13 @@ class Item(object):
         except ZeroDivisionError:
             return 0
 
+    def to_json(self):
+        return {'value': self.value,
+                'weight': self.weight,
+                'index': self.index,
+                'name': self.name
+                }
+
 
 class Datastore(object):
     """
@@ -34,22 +41,57 @@ class Datastore(object):
         self.items = None
         self.sorted = sorted
 
-    def load_from_json(self, s):
+    @staticmethod
+    def sort_by_value_density(items):
         """
-        load data from json string
-        :param s: string with json
+        Sorts items by value density in decreasing order (suitable for geedy and b&b solvers)
+        :param items: list of Item objects
+        :return: sotred list according to item.density
+        """
+        return sorted(items, key=lambda x: x.density, reverse=True)
+
+    def load_from_json(self, data_json):
+        """
+        loads data from json
+        sample:
+            {
+                "num_items": 2,
+                "capacity": 6,
+                "items": [
+                    {
+                        "index": 0,
+                        "value": 8,
+                        "weight": 4
+                    },
+                    {
+                        "index": 1,
+                        "value": 10,
+                        "weight": 5
+                    }
+                ]
+            }
+        :param data_json: json with items
         :return:
         """
-        data = json.loads(s)
-        self.nitems = data['num_items']
-        self.capacity = data['capacity']
+        self.nitems = data_json['num_items']
+        self.capacity = data_json['capacity']
         self.items = []
 
-        for item in data['items']:
-            self.items.append(Item(item['value'], item['weight'], item['index']))
+        for item in data_json['items']:
+            name = item.get('name', "")
+            self.items.append(Item(item['value'], item['weight'], item['index'], name))
 
         if self.sorted:
             self.items = self.sort_by_value_density(self.items)
+
+    def load_from_json_str(self, s):
+        """
+        loads data from json string
+        :param s: string with json
+        :return:
+        """
+        self.load_from_json(json.loads(s))
+
 
     def load_from_json_file(self, file_path):
         """
@@ -59,13 +101,4 @@ class Datastore(object):
         """
         with open(file_path, 'r') as f:
             s = f.read()
-            self.load_from_json(s)
-
-    @staticmethod
-    def sort_by_value_density(items):
-        """
-        Sorts items by value density in decreasing order (suitable for geedy and b&b solvers)
-        :param items: list of Item objects
-        :return: sotred list according to item.density
-        """
-        return sorted(items, key=lambda x: x.density, reverse=True)
+            self.load_from_json_str(s)
