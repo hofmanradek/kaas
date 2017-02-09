@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 from celery import shared_task, Task
-from django.contrib.auth.models import User
-import json
 
 from kaas.solvers.slvr_greedy import SolverGreedy
 from kaas.solvers.slvr_dp import SolverDynamic, SolverDynamicRecurrent
@@ -30,21 +28,15 @@ def task_driver(data, user):
     :param user: Djnago User instance of task owner
     :return: celery task result
     """
-
     solver_type = data.get('solver_type', SOLVER_DEFAULT)  # we have a default solver if not provided
     knapsack_data = data.get('knapsack_data')
     #we created a new task in database, in task we will update it on result
     kt = KnapsackTask(#task_id=task_id,
             user=user,
-            #status='SUCCESS',
-            #done=True,
             solver_type=solver_type,
             input=knapsack_data['items'],
             capacity=knapsack_data['capacity'],
             nitems=knapsack_data['num_items'],
-            #result_value=retval[0],
-            #result_weight=retval[1],
-            #result_items=retval[2]
     )
     kt.save()
 

@@ -4,8 +4,8 @@
 
 <h1>Solve knapsack</h1>
 <p>Here you can submit new knapsack task to one of available solvers. There are two ways how to do this:</p>
-<div class="row">
-    <div class="col-md-6">
+
+
     <h4>Upload task as a JSON:</h4>
 <form action="." method="post" enctype="multipart/form-data">
     {{ solve_form.as_p }}
@@ -13,12 +13,53 @@
     <p><input type="submit" class="btn btn-default" value="Solve"></p>
 </form>
 
-</div>
-<div class="col-md-6">
+
 <h4>Submit the task via a REST API:</h4>
 <p>
     Your personal Token for API calls: <code>{{token}}</code>
 </p>
-</div>
-</div>
+<p>
+<pre>
+    curl -X POST http://127.0.0.1:8000/api/v1/solve/ \
+             -H "Content-Type: application/json" \
+             -H "Authorization: Token 00a91e0adc4b814b89b2c850d419f107ce98d9ca" \
+             -d @knapsack_file.json
+</pre>
+where the knapsack_file.json contains kanpsack json structure:
+<pre>
+{"solver_type": "BRANCH_AND_BOUND",
+ "knapsack_data": {
+                   "num_items": 4,
+                   "capacity": 10,
+                   "items": [
+                             {
+                              "index": 0,
+                              "value": 8,
+                              "weight": 4
+                             },
+                             {
+                              "index": 1,
+                              "value": 10,
+                              "weight": 5
+                             },
+                             {
+                              "index": 2,
+                              "value": 15,
+                              "weight": 8
+                             },
+                             {
+                              "index": 3,
+                              "value": 4,
+                              "weight": 3
+                             }
+                            ]
+                   }
+}
+</pre>
+If the call is successful, we get back task_id
+<pre>{"task_id":"4eee853e-711a-4888-b5d1-5380f1b1fff9"}</pre>
+If the token is not valid we get
+<pre>{"detail":"Invalid token."}</pre>
+</p>
+
 {% endblock %}

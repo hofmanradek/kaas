@@ -5,7 +5,7 @@ from rest_framework import authentication, permissions
 from celery.result import AsyncResult
 
 from kaas.models import KnapsackTask
-from kaas.tasks import solve_knapsack, SOLVER_TYPES, SOLVER_DEFAULT
+from kaas.tasks import task_driver, solve_knapsack, SOLVER_TYPES, SOLVER_DEFAULT
 
 
 class SolveKnapsackAPI(APIView):
@@ -41,27 +41,7 @@ class SolveKnapsackAPI(APIView):
         }
         :return: Celery task_id for further tracking
         """
-        solver_type = request.data.get('solver_type', SOLVER_DEFAULT)  # we have a default solver if not provided
-        knapsack_data = request.data.get('knapsack_data')
-        print(request.user, type(request.user))
-        #we created a new task in database, in task we will update it on result
-        kt = KnapsackTask(#task_id=task_id,
-                          user=request.user,
-                          #status='SUCCESS',
-                          #done=True,
-                          solver_type=solver_type,
-                          input=knapsack_data['items'],
-                          capacity=knapsack_data['capacity'],
-                          nitems=knapsack_data['num_items'],
-                          #result_value=retval[0],
-                          #result_weight=retval[1],
-                          #result_items=retval[2]
-                          )
-        kt.save()
-
-        #call of celery task
-        result = solve_knapsack.delay(solver_type, knapsack_data, kt.id, init_kwargs={}, solve_kwargs={})
-
+        result = task_driver(request.data, request.user)
         return Response({'task_id': result.task_id}, status=status.HTTP_201_CREATED)
 
 
