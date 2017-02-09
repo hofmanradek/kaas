@@ -6,9 +6,15 @@
 <p>Here you can submit new knapsack task to one of available solvers. There are two ways how to do this:</p>
 
 
-    <h4>Upload task as a JSON:</h4>
+<h4>Upload task as a JSON file:</h4>
+<p>
+    {{ solve_message }}
+</p>
 <form action="." method="post" enctype="multipart/form-data">
-    {{ solve_form.as_p }}
+    <div class="upload">
+        {{ solve_form.as_p }}
+    </div>
+
     {% csrf_token %}
     <p><input type="submit" class="btn btn-default" value="Solve"></p>
 </form>
@@ -19,6 +25,7 @@
     Your personal Token for API calls: <code>{{token}}</code>
 </p>
 <p>
+You call kapsack API using the token as follows:
 <pre>
     curl -X POST http://127.0.0.1:8000/api/v1/solve/ \
              -H "Content-Type: application/json" \
@@ -56,10 +63,9 @@ where the knapsack_file.json contains kanpsack json structure:
                    }
 }
 </pre>
-If the call is successful, we get back task_id
+If the call is successful, we get task_id which can be subsequently used for querying another API on task status and results
 <pre>{"task_id":"4eee853e-711a-4888-b5d1-5380f1b1fff9"}</pre>
 If the token is not valid we get
 <pre>{"detail":"Invalid token."}</pre>
 </p>
-
 {% endblock %}

@@ -1,9 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render, render_to_response
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from rest_framework.authtoken.models import Token
+from .forms import LoginForm, UserRegistrationForm
+from .forms import KnapsakTextArea
 import json
 
 from kaas.tasks import task_driver
@@ -24,9 +26,10 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     return HttpResponse('Authenticated successfully')
-                    return HttpResponse('Disabled account')
                 else:
-                    return HttpResponse('Invalid login')
+                    return HttpResponse('Disabled account')
+            else:
+                return HttpResponse('Invalid login')
     else:
         form = LoginForm()
     return render(request, 'kaas/login.html', {'form': form})
@@ -41,32 +44,20 @@ def dashboard(request):
 
 @login_required
 def solve(request):
-    from django.http import HttpResponseRedirect
-    from django.shortcuts import render
-    from .forms import UploadFileForm
-
-    # Imaginary function to handle an uploaded file.
-    #from somewhere import handle_uploaded_file
-
     token = Token.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        form = KnapsakTextArea(request.POST)
         if form.is_valid():
-            task_driver(json.loads(request.FILES['file'].read()), request.user)
+            task_driver(json.loads(form.cleaned_data['knapsack_json']), request.user)
             return HttpResponseRedirect('/dashboard/')
     else:
-        form = UploadFileForm()
-    return render(request, 'kaas/solve.html', {'token': token[0], 'section': 'solve', 'solve_form': form})
+        form = KnapsakTextArea()
 
-
-
-
-
-    #token = Token.objects.get_or_create(user=request.user)
-    #return render(request,
-    #              'kaas/solve.html',
-    #              {'token': token[0], 'section': 'solve'})
+    data = {'token': token[0],
+            'section': 'solve',
+            'solve_form': form}
+    return render(request, 'kaas/solve.html', data)
 
 
 def register(request):

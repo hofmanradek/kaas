@@ -1,17 +1,19 @@
 from django import forms
+from django.contrib.auth.models import User
+
 
 class LoginForm(forms.Form):
+    """
+    User login form
+    """
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-class UploadFileForm(forms.Form):
-    #title = forms.CharField(max_length=50)
-    file = forms.FileField()
-
-
-from django.contrib.auth.models import User
 class UserRegistrationForm(forms.ModelForm):
+    """
+    New user registration form
+    """
     password = forms.CharField(label='Password',
                                widget=forms.PasswordInput)
     password2 = forms.CharField(label='Repeat password',
@@ -24,3 +26,10 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
+
+
+class KnapsakTextArea(forms.Form):
+    """
+    Text area where user can copy paste JSON with knapsack task definition
+    """
+    knapsack_json = forms.CharField(widget=forms.Textarea, label='')
