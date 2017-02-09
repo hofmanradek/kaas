@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import json
+import sys
 
 from kaas.tasks import SOLVER_TYPES
 
@@ -45,7 +46,7 @@ class KnapsakTextArea(forms.Form):
         try:
             jdata = json.loads(data)
         except:
-            raise ValidationError("This is not a valid json")
+            raise ValidationError("This is not a valid json: {}".format(sys.exc_info()[1]))
 
         #mandatory keys are level 0
         mandatory_keys = ("solver_type", "knapsack_data")
@@ -87,6 +88,6 @@ class KnapsakTextArea(forms.Form):
                 if not type(item[k]) in (int, float):
                     raise ValidationError("Key '{}' of item {} not type int or float!".format(k, i))
                 if item[k] < 0:
-                    raise ValidationError("Key '{}' of item {} cannot be <0!".format(k, i))
+                    raise ValidationError("Value {} of key '{}' of item {} cannot be <0!".format(item[k], k, i))
 
         return data
