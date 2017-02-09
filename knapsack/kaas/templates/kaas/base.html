@@ -1,0 +1,66 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'kaas/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'kaas/css/navbar-fixed-top.css' %}" rel="stylesheet">
+    <link href="{% static 'kaas/css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+</head>
+<body>
+<div id="content">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">KaaS</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li {% if request.path == "/" %} class="active" {% endif %}><a href="/">Home</a></li>
+                    {% if request.user.is_authenticated %}
+                    <li {% if request.path == "/dashboard/" %} class="active" {% endif %}><a href="dashboard/">Dashboard</a></li>
+                    {% endif %}
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if request.user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logged as {{request.user}}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'password_change' %}">Change password</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li {% if request.path == "/login/" %} class="active" {% endif %}><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+
+
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container">
+    {% block content %}
+    {% endblock %}
+    </div> <!-- /container -->
+</div>
+
+    <script src="{% static 'kaas/js/jquery.min.js' %}"></script>
+    <script src="{% static 'kaas/js/ie10-viewport-bug-workaround.js' %}"></script>
+    <script src="{% static 'kaas/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
