@@ -3,6 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
+from rest_framework.authtoken.models import Token
 
 
 def index(request):
@@ -38,9 +39,10 @@ def dashboard(request):
 
 @login_required
 def solve(request):
+    token = Token.objects.get_or_create(user=request.user)
     return render(request,
                   'kaas/solve.html',
-                  {'section': 'solve'})
+                  {'token': token[0], 'section': 'solve'})
 
 
 def register(request):
