@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 import json
 
+from kaas.tasks import SOLVER_TYPES
+
 
 class LoginForm(forms.Form):
     """
@@ -50,6 +52,11 @@ class KnapsakTextArea(forms.Form):
         for k in mandatory_keys:
             if not k in jdata.keys():
                 raise ValidationError("Key '{}' not found in knapsack json!".format(k))
+
+        #validate solver type
+        st = jdata['solver_type']
+        if not st in SOLVER_TYPES.keys():
+            raise ValidationError("'solver_type' {} not supported!".format(st))
 
         #mandatory keys of items
         knapsack_data = jdata['knapsack_data']
