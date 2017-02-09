@@ -9,6 +9,7 @@ from .forms import KnapsakTextArea
 import json
 
 from kaas.tasks import task_driver
+from kaas.models import KnapsackTask
 
 def index(request):
     template = 'kaas/index.html'
@@ -37,9 +38,11 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
+    tasks = KnapsackTask.objects.filter(user=request.user)[:100]
     return render(request,
                   'kaas/dashboard.html',
-                  {'section': 'dashboard'})
+                  {'section': 'dashboard',
+                   'tasks': tasks})
 
 
 @login_required

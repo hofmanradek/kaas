@@ -2,9 +2,76 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
-<h1>Dashboard</h1>
-<p>Welcome to your dashboard, {{request.user.first_name}}.</p>
+<h1>Task Dashboard</h1>
+<br/>
+<p>Welcome to your dashboard, <b>{{request.user.first_name}}</b>, here is your last 100 tasks:</p>
+<br/>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            task_id
+        </th>
+        <th>
+            status
+        </th>
+        <th>
+            solver
+        </th>
+        <th>
+            capacity
+        </th>
+        <th>
+            # all items
+        </th>
+        <th>
+            result value
+        </th>
+        <th>
+            result weight
+        </th>
+        <th>
+            # selected items
+        </th>
 
+    </tr>
+    </thead>
+    <tbody>
+{% for task in tasks %}
+        <tr>
+            <td>
+                {{ forloop.counter }}
+            </td>
+            <td>
+                {{ task.task_id }}
+            </td>
+            <td>
+                {{ task.status }}
+            </td>
+            <td>
+                {{ task.solver_type }}
+            </td>
+            <td>
+                {{ task.capacity }}
+            </td>
+            <td>
+                {{ task.nitems }}
+            </td>
+            <td>
+                {{ task.result_value }}
+            </td>
+            <td>
+                {{ task.result_weight }}
+            </td>
+            <td>
+                {{ task.result_items|length }}
+            </td>
 
-
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
 {% endblock %}
