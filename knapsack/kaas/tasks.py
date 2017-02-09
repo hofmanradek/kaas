@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from celery import shared_task, Task
 from django.contrib.auth.models import User
+import json
 
 from kaas.solvers.slvr_greedy import SolverGreedy
 from kaas.solvers.slvr_dp import SolverDynamic, SolverDynamicRecurrent
@@ -20,6 +21,37 @@ SOLVER_TYPES = {
 }
 
 SOLVER_DEFAULT = 'BRANCH_AND_BOUND'  # default solver if not provided
+
+
+def task_driver(data, user):
+    """
+    Driver prepares task to be run and created a KnapsackTask object which will be later updated on its result
+    :param data: Input data in json
+    :param user: Djnago User instance of task owner
+    :return: celery task result
+    """
+
+    solver_type = data.get('solver_type', SOLVER_DEFAULT)  # we have a default solver if not provided
+    knapsack_data = data.get('knapsack_data')
+    #we created a new task in database, in task we will update it on result
+    kt = KnapsackTask(#task_id=task_id,
+            user=user,
+            #status='SUCCESS',
+            #done=True,
+            solver_type=solver_type,
+            input=knapsack_data['items'],
+            capacity=knapsack_data['capacity'],
+            nitems=knapsack_data['num_items'],
+            #result_value=retval[0],
+            #result_weight=retval[1],
+            #result_items=retval[2]
+    )
+    kt.save()
+
+    #call of celery task
+    result = solve_knapsack.delay(solver_type, knapsack_data, kt.id, init_kwargs={}, solve_kwargs={})
+
+    return result
 
 
 class LogTaskResult(Task):

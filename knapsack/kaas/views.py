@@ -4,7 +4,9 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from rest_framework.authtoken.models import Token
+import json
 
+from kaas.tasks import task_driver
 
 def index(request):
     template = 'kaas/index.html'
@@ -39,10 +41,32 @@ def dashboard(request):
 
 @login_required
 def solve(request):
+    from django.http import HttpResponseRedirect
+    from django.shortcuts import render
+    from .forms import UploadFileForm
+
+    # Imaginary function to handle an uploaded file.
+    #from somewhere import handle_uploaded_file
+
     token = Token.objects.get_or_create(user=request.user)
-    return render(request,
-                  'kaas/solve.html',
-                  {'token': token[0], 'section': 'solve'})
+
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            task_driver(json.loads(request.FILES['file'].read()), request.user)
+            return HttpResponseRedirect('/dashboard/')
+    else:
+        form = UploadFileForm()
+    return render(request, 'kaas/solve.html', {'token': token[0], 'section': 'solve', 'solve_form': form})
+
+
+
+
+
+    #token = Token.objects.get_or_create(user=request.user)
+    #return render(request,
+    #              'kaas/solve.html',
+    #              {'token': token[0], 'section': 'solve'})
 
 
 def register(request):
