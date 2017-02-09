@@ -50,5 +50,6 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
 
     url(r'^dashboard/', views.dashboard, name='dashboard'),
+    url(r'^solve/', views.solve, name='solve')
 
 ]

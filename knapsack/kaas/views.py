@@ -36,6 +36,13 @@ def dashboard(request):
                   {'section': 'dashboard'})
 
 
+@login_required
+def solve(request):
+    return render(request,
+                  'kaas/solve.html',
+                  {'section': 'solve'})
+
+
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
