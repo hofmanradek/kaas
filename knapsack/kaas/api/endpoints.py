@@ -66,6 +66,9 @@ class TaskInfoAPI(APIView):
                    }
 
         if c_task.status == 'SUCCESS':
-            retdata['result'] = c_task.result
+            retdata['result'] = {}
+            retdata['result']['total_value'] = c_task.result[0]
+            retdata['result']['total_weight'] = c_task.result[1]
+            retdata['result']['selected_items'] = c_task.result[2]
 
         return Response(retdata, status=status.HTTP_200_OK)

@@ -123,5 +123,5 @@ def solve_knapsack(self, solver_type, knapsack_data, kt_id, init_kwargs={}, solv
     v = solver.tvalue
     w = solver.tweight
     its = solver.get_item_json()
-    return v, w, its
+    return v, w, its['items']
 
