@@ -3,41 +3,35 @@
 {% block content %}
 
 <h1>Solve knapsack</h1>
-<p>Here you can submit new knapsack task to one of available solvers. There are two ways how to do this:</p>
+<br/>
+<div class="row">
+    <div class="col-md-12">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="{{active1}}" class="active"><a href="#howto" aria-controls="howto" role="tab" data-toggle="tab">Introduction</a></li>
+        <li role="presentation" class="{{active2}}"><a href="#json" aria-controls="json" role="tab" data-toggle="tab">Web JSON input</a></li>
+        <li role="presentation" class="{{active3}}"><a href="#rest" aria-controls="rest" role="tab" data-toggle="tab">REST API</a></li>
+    </ul>
 
-
-<h4>Upload task as a JSON file:</h4>
-<p>
-    {{ solve_message }}
-</p>
-<form action="." method="post" enctype="multipart/form-data">
-    {%for field in solve_form %}
-    <div class="control-group {%if field.errors %}bg-danger{%endif%}">
-        {{ field.errors }}
-    </div>
-    {{ field }}
-    {% endfor %}
-
-
-
-    {% csrf_token %}
-    <p><input type="submit" class="btn btn-default" value="Solve"></p>
-</form>
-
-
-<h4>Submit the task via a REST API:</h4>
-<p>
-    Your personal Token for API calls: <code>{{token}}</code>
-</p>
-<p>
-You call kapsack API using the token as follows:
-<pre>
-    curl -X POST http://127.0.0.1:8000/api/v1/solve/ \
-             -H "Content-Type: application/json" \
-             -H "Authorization: Token 00a91e0adc4b814b89b2c850d419f107ce98d9ca" \
-             -d @knapsack_file.json
-</pre>
-where the knapsack_file.json contains kanpsack json structure:
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane {{activec1}}" id="howto">
+            <br/>
+            <h4>Introduction</h4>
+            <p>Currenly, there are two ways how to submit a new knapsack task:
+            <ul>
+                <li>Copy-past json configuration in to a textarea and send to server (see tab <b>Web JSON input</b>)</li>
+                <li>use REST API call (see tab <b>REST API</b>)</li>
+            </ul>
+            Both methods use a standardized <b>kanpsack_json_format</b>&trade; which we developed in our Knapsack Laboratories.
+            User defines solver and input data. Available solvers are:
+            <ul>
+                <li>GREEDY - Greedy algorithm</li>
+                <li>DYN_PROG - Dynamic programming solution</li>
+                <li>DYN_PROG_RECURRENT - Recurrent version of dynamic programming</li>
+                <li>BRANCH_AND_BOUND - Branch and bound algorith with Greedy relexation</li>
+            </ul>
+            The format is more oe less self describing, see an example below:
 <pre>
 {"solver_type": "BRANCH_AND_BOUND",
  "knapsack_data": {
@@ -68,9 +62,108 @@ where the knapsack_file.json contains kanpsack json structure:
                    }
 }
 </pre>
-If the call is successful, we get task_id which can be subsequently used for querying another API on task status and results
-<pre>{"task_id":"4eee853e-711a-4888-b5d1-5380f1b1fff9"}</pre>
-If the token is not valid we get
-<pre>{"detail":"Invalid token."}</pre>
-</p>
+            </p>
+        </div>
+        <div role="tabpanel" class="tab-pane {{activec2}}" id="json">
+            <br/>
+            <h4>Upload task as a JSON file</h4>
+            <p>
+                Copy paste jsou configuration JSON and press <b>Solve</b> button. Don't worry about typos -- your configurations are thoroughly validated before real submission to solvers:) For the beginning you can copy-paste sample <b>kanpsack_json_format</b>&trade; from the first tab.
+            </p>
+            <p class="{%if solve_message %}bg-success solvesucerr{%endif%}"">
+                {{ solve_message }}
+            </p>
+            <form action="." method="post" enctype="multipart/form-data">
+                {%for field in solve_form %}
+                <div class="{%if field.errors %}bg-danger solvesucerr{%endif%}">
+                    {{ field.errors }}
+                </div>
+                {{ field }}
+                {% endfor %}
+                {% csrf_token %}
+                <p><input type="submit" class="btn btn-default" value="Solve"></p>
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane {{activec3}}" id="rest">
+            <br/>
+            <h4>Submit the task via a REST API</h4>
+            <p>
+                Knapsack REST API is protected using token authorization mechanism. To be able to use it you must include a token
+                into header of all API calls, see example below.
+            </p>
+            <p>
+                Your personal Token for API calls: <code>{{token}}</code>
+            </p>
+            <p>
+                Tasks in <b>kanpsack_json_format</b>&trade; can be submitted via API endpoint <tt>/api/v1/solve/</tt>. Example of calling this API using <a href="https://curl.haxx.se/" target="_blank"><tt>curl</tt></a> follows:
+<pre>
+curl -X POST http://127.0.0.1:8000/api/v1/solve/ \
+         -H "Content-Type: application/json" \
+         -H "Authorization: Token 00a91e0adc4b814b89b2c850d419f107ce98d9ca" \
+         -d @knapsack_file.json
+</pre>
+            <p>
+            The <b>kanpsack_json_format</b>&trade; definition of the task is stored in <tt>knapsack_file.json</tt> file.
+            </p>
+            <p>
+            If the call is successful, we get <tt>task_id</tt> which can be subsequently used for querying another API on task status and results:
+            </p>
+            <pre>{"task_id":"4eee853e-711a-4888-b5d1-5380f1b1fff9"}</pre>
+            <p>
+            If the token is not valid we get
+            </p>
+            <pre>{"detail":"Invalid token."}</pre>
+            </p>
+            <p>
+            Even tasks sent via REST API can be monitored using <a href="/dashboard/">Dashboard</a>.
+            </p>
+            <p>
+            There is also an API endpoint <tt>/api/v1/task/[task_id]/</tt> which gives us information on the task given its id:
+            </p>
+            <pre>
+curl -X GET http://127.0.0.1:8000/api/v1/task/4eee853e-711a-4888-b5d1-5380f1b1fff9/ \
+     -H "Authorization: Token 00a91e0adc4b814b89b2c850d419f107ce98d9ca"
+</pre>
+            <p>
+                What we get is a JSON structure describing content of optimal set of items, its total value and weight:
+
+            </p>
+            <pre>
+{
+    "task_id": "4eee853e-711a-4888-b5d1-5380f1b1fff9",
+    "status": "SUCCESS",
+    "result": [
+        18,
+        9,
+        {
+            "items": [
+                {
+                    "value": 8,
+                    "weight": 4,
+                    "index": 0,
+                    "name": ""
+                },
+                {
+                    "value": 10,
+                    "weight": 5,
+                    "index": 1,
+                    "name": ""
+                }
+            ]
+        }
+    ]
+}</pre>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
 {% endblock %}

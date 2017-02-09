@@ -50,13 +50,29 @@ def solve(request):
         form = KnapsakTextArea(request.POST)
         if form.is_valid():
             task_driver(json.loads(form.cleaned_data['knapsack_json']), request.user)
-            return HttpResponseRedirect('/dashboard/')
+            #return HttpResponseRedirect('/dashboard/')
+            data = {'token': token[0],
+                    'section': 'solve',
+                    'solve_form': form,
+                    'solve_message': "Task has been submitted! You can chech its progress and results on the Dashboard",
+                    'active2': "active",
+                    'activec2': "active"}
+            return render(request, 'kaas/solve.html', data)
+        else:
+            data = {'token': token[0],
+                    'section': 'solve',
+                    'solve_form': form,
+                    'active2': "active",
+                    'activec2': "active"}
+            return render(request, 'kaas/solve.html', data)
     else:
         form = KnapsakTextArea()
 
     data = {'token': token[0],
             'section': 'solve',
-            'solve_form': form}
+            'solve_form': form,
+            'active1': "active",
+            'activec1': "active"}
     return render(request, 'kaas/solve.html', data)
 
 
