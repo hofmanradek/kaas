@@ -27,11 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -39,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'kaas'
+    'kaas',
+    'django.contrib.admin',  # because of custom logout page must come after our application
 ]
 
 MIDDLEWARE = [
@@ -127,4 +126,15 @@ FIXTURE_DIRS = (
     os.path.join(BASE_DIR, "fixtures/kaas/"),
 )
 
+#celery stuff
 CELERY_IGNORE_RESULT = False
+
+#fornt-end stuff
+from django.core.urlresolvers import reverse_lazy
+#which URL to redirect after login if the contrib.auth.views.login view gets no next parameter
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_URL = reverse_lazy('logout')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
