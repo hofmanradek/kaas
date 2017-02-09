@@ -4,8 +4,8 @@ from kaas.models import KnapsackTask
 
 @admin.register(KnapsackTask)
 class MetaResolvedAdmin(admin.ModelAdmin):
-    list_display = ('task_id', 'status', 'exception_class', 'exception_msg',\
+    list_display = ('task_id', 'user', 'status', 'exception_class', 'exception_msg',\
                     'capacity', 'nitems', 'result_weight', 'result_value')
-    list_filter = ('task_id', 'status')
+    list_filter = ('task_id', 'status', 'user')
 
 

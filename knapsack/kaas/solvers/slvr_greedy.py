@@ -9,7 +9,7 @@ class SolverGreedy(SolverBase):
         "this solver takes more inputs than the rest, we have to extend constructor"
         super(self.__class__, self).__init__(*args, **kwargs)
 
-        self.fract = fractional  # do we assume fractional Greegy? (good for relaxation in Branc and Bound)
+        self.fract = fractional  # do we assume fractional Greegy? (good for relaxation in Branch and Bound)
 
         if not self.ds.sorted:
             raise("not sorted datastore")

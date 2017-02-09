@@ -20,9 +20,8 @@ class BranchAndBoundSolver(SolverBase):
 
         def _upper_bound(self):
             """
-            // Returns bound of profit in subtree rooted with u.
-            // This function mainly uses Greedy solution to find
-            // an upper bound on maximum profit.
+            This function uses fractional Greedy solver to find
+            an upper bound on maximum profit.
             :return: upper bound given by Greedy fractional solver
             """
             sgreedy = SolverGreedy(self.ds, fractional=True)

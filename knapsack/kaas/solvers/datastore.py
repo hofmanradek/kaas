@@ -7,7 +7,6 @@ class Item(object):
     """
     Class representing a single Knapsack item
     """
-
     def __init__(self, value, weight, index=None, name=""):
         self.name = name
         self.value = value
@@ -34,7 +33,6 @@ class Datastore(object):
     """
     Class representing uniresal datastore for all Knapsack solvers
     """
-
     def __init__(self, sorted=False):
         self.nitems = 0.  # number of items
         self.capacity = 0.  # maximum capacity of Knapsack

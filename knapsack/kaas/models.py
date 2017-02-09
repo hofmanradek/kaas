@@ -1,5 +1,6 @@
 from django.db import models
 from jsonfield import JSONField
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -7,10 +8,11 @@ class KnapsackTask(models.Model):
     """
     Class representing database model for a Knapsack task
     """
-    task_id = models.CharField(max_length=36)  # UUID has 36 chars
-    status = models.CharField(max_length=20)
-    solver_type = models.CharField(max_length=30)
-    done=models.BooleanField(default=False)
+    task_id = models.CharField(max_length=36, blank=True)  # celery task id is UUID and has 36 chars
+    status = models.CharField(max_length=20, default='SUBMITTED')
+    solver_type = models.CharField(max_length=30, blank=True)
+    done = models.BooleanField(default=False)
+    user = models.ForeignKey(User, related_name="tasks_of_user")
 
     #if task fails (to know what happened)
     exception_class = models.TextField(blank=True)

@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from celery import shared_task, Task
+from django.contrib.auth.models import User
 
 from kaas.solvers.slvr_greedy import SolverGreedy
 from kaas.solvers.slvr_dp import SolverDynamic, SolverDynamicRecurrent
@@ -35,19 +36,15 @@ class LogTaskResult(Task):
         :param einfo: ExceptionInfo instance, containing the traceback.
         :return:
         """
-        input_data = args[1]
-
-        kt = KnapsackTask(task_id=task_id,
-                          status='FAILURE',
-                          done=True,
-                          solver_type=args[0],
-                          exception_class=exc.__class__.__name__,
-                          exception_msg=str(exc).strip(),
-                          exception_traceback=str(einfo).strip(),
-                          input=input_data['items'],
-                          capacity=input_data['capacity'],
-                          nitems=input_data['num_items'],
-                          )
+        kt_id = args[2]
+        #update on FAILURE status
+        kt = KnapsackTask.objects.get(id=kt_id)
+        kt.task_id = task_id
+        kt.status = 'FAILURE'
+        kt.done = True
+        kt.exception_class = exc.__class__.__name__
+        kt.exception_msg = str(exc).strip()
+        kt.exception_traceback = str(einfo).strip()
         kt.save()
 
 
@@ -60,28 +57,25 @@ class LogTaskResult(Task):
         :param kwargs: Original keyword arguments for the executed task.
         :return:
         """
-        input_data = args[1]
-
-        kt = KnapsackTask(task_id=task_id,
-                          status='SUCCESS',
-                          done=True,
-                          solver_type=args[0],
-                          input=input_data['items'],
-                          capacity=input_data['capacity'],
-                          nitems=input_data['num_items'],
-                          result_value=retval[0],
-                          result_weight=retval[1],
-                          result_items=retval[2]
-                          )
+        kt_id = args[2]
+        #update in SUCCESS status
+        kt = KnapsackTask.objects.get(id=kt_id)
+        kt.task_id = task_id
+        kt.status = 'SUCCESS'
+        kt.done = True
+        kt.result_value = retval[0]
+        kt.result_weight = retval[1]
+        kt.result_items = retval[2]
         kt.save()
 
 
 @shared_task(base=LogTaskResult, bind=True, name='Knapsack problem', queue="knapsack_solvers")
-def solve_knapsack(self, solver_type, knapsack_data, init_kwargs={}, solve_kwargs={}):
+def solve_knapsack(self, solver_type, knapsack_data, kt_id, init_kwargs={}, solve_kwargs={}):
     """
     Celery task to solve Knapsack problem
     :param solver_type: string identified of solver type
     :param knapsack_data: json with knapsack data, described in Datastore class
+    :param kt_id: id of KnapsackTask in database
     :param init_kwargs:  additional params that can be passed to solver constructor, e.g. fractional option
     :param solve_kwargs: additinoal params that can be passed to solve() method, e.g. offsets
     :return: total value and weight of knapsack items
