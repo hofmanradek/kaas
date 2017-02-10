@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from celery import shared_task, Task
+from datetime import datetime, timezone
 
 from kaas.solvers.slvr_greedy import SolverGreedy
 from kaas.solvers.slvr_dp import SolverDynamic, SolverDynamicRecurrent
@@ -69,6 +70,8 @@ class LogTaskResult(Task):
         kt.exception_class = exc.__class__.__name__
         kt.exception_msg = str(exc).strip()
         kt.exception_traceback = str(einfo).strip()
+        kt.task_total_duration = datetime.now(timezone.utc) - kt.task_created  # just approximate value - time to failure:)
+        kt.task_total_duration = datetime.now(timezone.utc) - kt.task_created  # just approximate value - time to failure:)
         kt.save()
 
 
@@ -90,6 +93,10 @@ class LogTaskResult(Task):
         kt.result_value = retval[0]
         kt.result_weight = retval[1]
         kt.result_items = retval[2]
+        kt.task_solve_start = retval[3]
+        kt.task_solve_end = retval[4]
+        kt.task_solution_duration = retval[4] - retval[3]
+        kt.task_total_duration = retval[4] - kt.task_created
         kt.save()
 
 
@@ -104,7 +111,8 @@ def solve_knapsack(self, solver_type, knapsack_data, kt_id, init_kwargs={}, solv
     :param solve_kwargs: additinoal params that can be passed to solve() method, e.g. offsets
     :return: total value and weight of knapsack items
     """
-    self.update_state(state='PREPARING')
+    solution_start = datetime.now(timezone.utc)
+    self.update_state(state='INITIALIZING')
 
     #construction of datastore
     #requires this solver sorted items by their value density?
@@ -123,5 +131,6 @@ def solve_knapsack(self, solver_type, knapsack_data, kt_id, init_kwargs={}, solv
     v = solver.tvalue
     w = solver.tweight
     its = solver.get_item_json()
-    return v, w, its['items']
+    solution_end = datetime.now(timezone.utc)
+    return v, w, its['items'], solution_start, solution_end
 
