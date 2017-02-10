@@ -97,4 +97,4 @@ def knapsack_textarea_field_validation(jdata):
             if item[k] < 0:
                 raise ValidationError("Value {} of key '{}' of item {} cannot be <0!".format(item[k], k, i))
 
-    return jdata
+    return json.dumps(jdata)
