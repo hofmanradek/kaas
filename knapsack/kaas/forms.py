@@ -53,7 +53,7 @@ class KnapsakTextArea(forms.Form):
 
 def knapsack_textarea_field_validation(jdata):
     """
-    :param data: string data form the textarea field
+    :param data: json data of knapsack configuration
     """
     #mandatory keys are level 0
     mandatory_keys = ("solver_type", "knapsack_data")

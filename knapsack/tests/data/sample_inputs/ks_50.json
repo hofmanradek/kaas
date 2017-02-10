@@ -1,0 +1,258 @@
+{"solver_type": "BRANCH_AND_BOUND",
+ "knapsack_data": {
+  "num_items": 50,
+  "capacity": 341045,
+  "items": [
+    {
+      "index": 0,
+      "value": 1906,
+      "weight": 4912
+    },
+    {
+      "index": 1,
+      "value": 41516,
+      "weight": 99732
+    },
+    {
+      "index": 2,
+      "value": 23527,
+      "weight": 56554
+    },
+    {
+      "index": 3,
+      "value": 559,
+      "weight": 1818
+    },
+    {
+      "index": 4,
+      "value": 45136,
+      "weight": 108372
+    },
+    {
+      "index": 5,
+      "value": 2625,
+      "weight": 6750
+    },
+    {
+      "index": 6,
+      "value": 492,
+      "weight": 1484
+    },
+    {
+      "index": 7,
+      "value": 1086,
+      "weight": 3072
+    },
+    {
+      "index": 8,
+      "value": 5516,
+      "weight": 13532
+    },
+    {
+      "index": 9,
+      "value": 4875,
+      "weight": 12050
+    },
+    {
+      "index": 10,
+      "value": 7570,
+      "weight": 18440
+    },
+    {
+      "index": 11,
+      "value": 4436,
+      "weight": 10972
+    },
+    {
+      "index": 12,
+      "value": 620,
+      "weight": 1940
+    },
+    {
+      "index": 13,
+      "value": 50897,
+      "weight": 122094
+    },
+    {
+      "index": 14,
+      "value": 2129,
+      "weight": 5558
+    },
+    {
+      "index": 15,
+      "value": 4265,
+      "weight": 10630
+    },
+    {
+      "index": 16,
+      "value": 706,
+      "weight": 2112
+    },
+    {
+      "index": 17,
+      "value": 2721,
+      "weight": 6942
+    },
+    {
+      "index": 18,
+      "value": 16494,
+      "weight": 39888
+    },
+    {
+      "index": 19,
+      "value": 29688,
+      "weight": 71276
+    },
+    {
+      "index": 20,
+      "value": 3383,
+      "weight": 8466
+    },
+    {
+      "index": 21,
+      "value": 2181,
+      "weight": 5662
+    },
+    {
+      "index": 22,
+      "value": 96601,
+      "weight": 231302
+    },
+    {
+      "index": 23,
+      "value": 1795,
+      "weight": 4690
+    },
+    {
+      "index": 24,
+      "value": 7512,
+      "weight": 18324
+    },
+    {
+      "index": 25,
+      "value": 1242,
+      "weight": 3384
+    },
+    {
+      "index": 26,
+      "value": 2889,
+      "weight": 7278
+    },
+    {
+      "index": 27,
+      "value": 2133,
+      "weight": 5566
+    },
+    {
+      "index": 28,
+      "value": 103,
+      "weight": 706
+    },
+    {
+      "index": 29,
+      "value": 4446,
+      "weight": 10992
+    },
+    {
+      "index": 30,
+      "value": 11326,
+      "weight": 27552
+    },
+    {
+      "index": 31,
+      "value": 3024,
+      "weight": 7548
+    },
+    {
+      "index": 32,
+      "value": 217,
+      "weight": 934
+    },
+    {
+      "index": 33,
+      "value": 13269,
+      "weight": 32038
+    },
+    {
+      "index": 34,
+      "value": 281,
+      "weight": 1062
+    },
+    {
+      "index": 35,
+      "value": 77174,
+      "weight": 184848
+    },
+    {
+      "index": 36,
+      "value": 952,
+      "weight": 2604
+    },
+    {
+      "index": 37,
+      "value": 15572,
+      "weight": 37644
+    },
+    {
+      "index": 38,
+      "value": 566,
+      "weight": 1832
+    },
+    {
+      "index": 39,
+      "value": 4103,
+      "weight": 10306
+    },
+    {
+      "index": 40,
+      "value": 313,
+      "weight": 1126
+    },
+    {
+      "index": 41,
+      "value": 14393,
+      "weight": 34886
+    },
+    {
+      "index": 42,
+      "value": 1313,
+      "weight": 3526
+    },
+    {
+      "index": 43,
+      "value": 348,
+      "weight": 1196
+    },
+    {
+      "index": 44,
+      "value": 419,
+      "weight": 1338
+    },
+    {
+      "index": 45,
+      "value": 246,
+      "weight": 992
+    },
+    {
+      "index": 46,
+      "value": 445,
+      "weight": 1390
+    },
+    {
+      "index": 47,
+      "value": 23552,
+      "weight": 56804
+    },
+    {
+      "index": 48,
+      "value": 23552,
+      "weight": 56804
+    },
+    {
+      "index": 49,
+      "value": 67,
+      "weight": 634
+    }
+  ]
+}
+}

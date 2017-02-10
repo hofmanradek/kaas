@@ -1,0 +1,118 @@
+{"solver_type": "BRANCH_AND_BOUND",
+ "knapsack_data": {
+  "num_items": 22,
+  "capacity": 400,
+  "items": [
+    {
+      "index": 0,
+      "value": 150,
+      "weight":  9
+    },
+    {
+      "index": 1,
+      "value": 	50, 
+	  "weight": 4
+	  },
+     {
+      "index": 2,
+      "value": 70, 
+	  "weight": 11
+	  },
+     {
+      "index": 3,
+      "value": 60,
+	  "weight": 15
+	},  
+    {
+      "index": 4,
+      "value": 80, 
+      "weight": 22
+    },  
+    {
+      "index": 5,
+      "value": 160,
+      "weight":  50
+    },
+    {
+      "index": 6,
+      "value":  20,
+      "weight": 7
+    },
+    {
+      "index": 7,
+      "value":  35,
+      "weight": 13
+    },
+    {
+      "index": 8,
+      "value":  60,
+      "weight": 27
+    },
+    {
+      "index": 9,
+      "value":  75,
+      "weight": 43
+    },
+    {
+      "index": 10,
+      "value":  70,
+      "weight": 42
+    },
+    {
+      "index": 11,
+      "value":  200,
+     "weight":  153
+    },
+    {
+      "index": 12,
+      "value":   30,
+      "weight": 23
+    },
+    {
+      "index": 13,
+      "value":   40, 
+      "weight": 39
+     },
+    {
+      "index": 14,
+      "value":   30,
+      "weight": 32
+    },
+    {
+      "index": 15,
+      "value":   12,
+      "weight": 18
+    },
+    {
+      "index": 16,
+      "value":  45,
+      "weight": 68
+    },
+    {
+      "index": 17,
+      "value":   15, 
+      "weight": 24
+     },
+     {
+      "index": 18,
+      "value":   40,
+      "weight":  73
+     },
+     {
+      "index": 19,
+      "value":  10,
+      "weight": 30
+     },
+     {
+      "index": 20,
+      "value":   10,
+      "weight": 48
+     },
+     {
+      "index": 21,
+      "value":   10,
+      "weight": 52
+      }
+      ]
+} 
+}

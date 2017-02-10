@@ -23,7 +23,7 @@ class KnapsackTask(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     celery_task_id = models.CharField(max_length=36, blank=True)  # celery task id is UUID and has 36 chars
-    status = models.CharField(max_length=20, default='CREATED')  # 'CREATED' -> 'INITIALIZING' -> 'SOLVING' -> `SUCCESS`/`FAILURE`
+    status = models.CharField(max_length=20, default='CREATED')  # 'CREATED' -> ('INITIALIZING' -> 'SOLVING') -> `SUCCESS`/`FAILURE`
     solver_type = models.CharField(max_length=30, blank=True)  # string identificator of solver types
     done = models.BooleanField(default=False)  # taks solution ended, does not mean with SUCCESS
     user = models.ForeignKey(User, related_name="tasks_of_user")  # task owner
