@@ -26,10 +26,10 @@
             Both methods use a standardized <b>kanpsack_json_format</b>&trade; which we developed in our Knapsack Laboratories.
             User defines solver and input data. Available solvers are:
             <ul>
-                <li>GREEDY - Greedy algorithm</li>
-                <li>DYN_PROG - Dynamic programming solution</li>
-                <li>DYN_PROG_RECURRENT - Recurrent version of dynamic programming</li>
-                <li>BRANCH_AND_BOUND - Branch and bound algorith with Greedy relexation</li>
+                <li><b>GREEDY</b> - Greedy algorithm</li>
+                <li><b>DYN_PROG</b> - Dynamic programming solution</li>
+                <li><b>DYN_PROG_RECURRENT</b> - Recurrent version of dynamic programming</li>
+                <li><b>BRANCH_AND_BOUND</b> - Branch and bound algorith with Greedy relexation</li>
             </ul>
             The format is more oe less self describing, see an example below:
 <pre>
@@ -95,9 +95,9 @@
                 Your personal Token for API calls: <code>{{token}}</code>
             </p>
             <p>
-                Tasks in <b>kanpsack_json_format</b>&trade; can be submitted via API endpoint <tt>/api/v1/solve/</tt>. Example of calling this API using <a href="https://curl.haxx.se/" target="_blank"><tt>curl</tt></a> follows:
+                Tasks in <b>kanpsack_json_format</b>&trade; can be submitted via API endpoint <tt>/api/v1/tasks/</tt>. Example of calling this API using <a href="https://curl.haxx.se/" target="_blank"><tt>curl</tt></a> follows:
 <pre>
-curl -X POST http://127.0.0.1:8000/api/v1/solve/ \
+curl -X POST http://127.0.0.1:8000/api/v1/tasks/ \
          -H "Content-Type: application/json" \
          -H "Authorization: Token 00a91e0adc4b814b89b2c850d419f107ce98d9ca" \
          -d @knapsack_file.json
@@ -108,7 +108,10 @@ curl -X POST http://127.0.0.1:8000/api/v1/solve/ \
             <p>
             If the call is successful, we get <tt>task_id</tt> which can be subsequently used for querying another API on task status and results:
             </p>
-            <pre>{"task_id":"4eee853e-711a-4888-b5d1-5380f1b1fff9"}</pre>
+<pre>{
+    "celery_task_id": "6611fd77-b7a9-4c77-b343-44f194996028",
+    "id": "f3eccd03-f989-4d0d-8178-8f70804df528"
+}</pre>
             <p>
             If the token is not valid we get
             </p>
@@ -118,38 +121,70 @@ curl -X POST http://127.0.0.1:8000/api/v1/solve/ \
             Even tasks sent via REST API can be monitored using <a href="/dashboard/">Dashboard</a>.
             </p>
             <p>
-            There is also an API endpoint <tt>/api/v1/task/[task_id]/</tt> which gives us information on the task given its id:
+            There is also an API endpoint <tt>/api/v1/tasks/[task_id]/</tt> which gives us information on the task given its id:
             </p>
             <pre>
-curl -X GET http://127.0.0.1:8000/api/v1/task/4eee853e-711a-4888-b5d1-5380f1b1fff9/ \
+curl -X GET http://127.0.0.1:8000/api/v1/tasks/f3eccd03-f989-4d0d-8178-8f70804df528/ \
      -H "Authorization: Token 00a91e0adc4b814b89b2c850d419f107ce98d9ca"
 </pre>
             <p>
-                What we get is a JSON structure describing content of optimal set of items, its total value and weight:
+                What we get is a JSON structure describing task inputs, solver, solution times, content of the optimal set of items, its total value and weight. Should any errors be raised during taks solution they are included as well.
 
             </p>
-            <pre>
+<pre>
 {
-    "task_id": "4eee853e-711a-4888-b5d1-5380f1b1fff9",
+    "id": "f3eccd03-f989-4d0d-8178-8f70804df528",
+    "celery_task_id": "6611fd77-b7a9-4c77-b343-44f194996028",
     "status": "SUCCESS",
-    "result": [
-        18,
-        9,
+    "solver_type": "BRANCH_AND_BOUND",
+    "done": true,
+    "user_name": "tester",
+    "task_created": "2017-02-10T19:11:38.182706Z",
+    "task_solve_start": "2017-02-10T19:11:39.751677Z",
+    "task_solve_end": "2017-02-10T19:11:39.778822Z",
+    "total_duration_sec": 1.596116,
+    "solution_duration_sec": 0.027145,
+    "exception_class": "",
+    "exception_msg": "",
+    "exception_traceback": "",
+    "input": [
         {
-            "items": [
-                {
-                    "value": 8,
-                    "weight": 4,
-                    "index": 0,
-                    "name": ""
-                },
-                {
-                    "value": 10,
-                    "weight": 5,
-                    "index": 1,
-                    "name": ""
-                }
-            ]
+            "value": 8,
+            "index": 0,
+            "weight": 4
+        },
+        {
+            "value": 10,
+            "index": 1,
+            "weight": 5
+        },
+        {
+            "value": 15,
+            "index": 2,
+            "weight": 8
+        },
+        {
+            "value": 4,
+            "index": 3,
+            "weight": 3
+        }
+    ],
+    "capacity": 10.0,
+    "nitems": 4,
+    "result_weight": 9.0,
+    "result_value": 18.0,
+    "result_items": [
+        {
+            "value": 8,
+            "index": 0,
+            "weight": 4,
+            "name": ""
+        },
+        {
+            "value": 10,
+            "index": 1,
+            "weight": 5,
+            "name": ""
         }
     ]
 }</pre>

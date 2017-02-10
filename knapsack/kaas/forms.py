@@ -37,7 +37,7 @@ class KnapsakTextArea(forms.Form):
     """
     Text area where user can copy paste JSON with knapsack task definition
     """
-    knapsack_json = forms.CharField(widget=forms.Textarea, label='')
+    knapsack_json = forms.CharField(widget=forms.Textarea(attrs={'rows': 25, 'cols': 100}), label='')
     #custom validation of out knapsack json
     def clean_knapsack_json(self):
         data = self.cleaned_data['knapsack_json']

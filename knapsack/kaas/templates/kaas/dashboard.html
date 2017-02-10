@@ -16,6 +16,9 @@
             id
         </th>
         <th>
+            created
+        </th>
+        <th>
             status
         </th>
         <th>
@@ -36,6 +39,9 @@
         <th>
             # selected items
         </th>
+        <th>
+            duration
+        </th>
 
     </tr>
     </thead>
@@ -47,6 +53,9 @@
             </td>
             <td>
                 {{ task.id }}
+            </td>
+            <td>
+                {{ task.task_created }}
             </td>
             <td>
                 {{ task.status }}
@@ -69,7 +78,9 @@
             <td>
                 {{ task.result_items|length }}
             </td>
-
+            <td>
+                {{ task.task_total_duration }}
+            </td>
         </tr>
 {% endfor %}
     </tbody>
