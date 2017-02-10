@@ -1,0 +1,569 @@
+[
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 1,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 1,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 1,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 4,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 4,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 4,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 5,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 5,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 5,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can add knapsack task",
+        "content_type": 6,
+        "codename": "add_knapsacktask"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can change knapsack task",
+        "content_type": 6,
+        "codename": "change_knapsacktask"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can delete knapsack task",
+        "content_type": 6,
+        "codename": "delete_knapsacktask"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can add Token",
+        "content_type": 7,
+        "codename": "add_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can change Token",
+        "content_type": 7,
+        "codename": "change_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can delete Token",
+        "content_type": 7,
+        "codename": "delete_token"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 8,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 8,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 8,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$aZjVR2LsEqrv$JFnK5EhqK7TIw8/jCs9fkHWW5JV8KSj6pHTq5gcbq4Y=",
+        "last_login": "2017-02-10T16:26:31.820Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-02-10T15:56:47.532Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$KrjkXmMcUMoS$IWye960nV2uVkb7JevwkE4dduAMPeUYLIavLPMhUqQk=",
+        "last_login": "2017-02-10T16:09:17.435Z",
+        "is_superuser": false,
+        "username": "tester",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-02-10T15:57:53.903Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "6t7np1g8kmsmrggx44d0fxt53904ivus",
+    "fields": {
+        "session_data": "NDdkMTg1NTk1OTNiODUxOTU2MWVmOTY4NDg1NjcyZTFmMTc0YjEwNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjE0MTUxZjBlYjI1NGFiYTZhNGQ4MGNjODY4NDE3MGNiNTQ3NDI2ZGUiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2017-02-24T16:26:31.823Z"
+    }
+},
+{
+    "model": "kaas.knapsacktask",
+    "pk": "babee2f4-2499-4d2f-ade3-0c93751830dd",
+    "fields": {
+        "celery_task_id": "92af51ce-2142-4383-ae7d-335ea518329a",
+        "status": "SUCCESS",
+        "solver_type": "BRANCH_AND_BOUND",
+        "done": true,
+        "user": 2,
+        "task_created": "2017-02-10T16:10:06.748Z",
+        "task_solve_start": "2017-02-10T16:10:07.882Z",
+        "task_solve_end": "2017-02-10T16:10:07.899Z",
+        "task_total_duration": "00:00:01.150517",
+        "task_solution_duration": "00:00:00.016802",
+        "exception_class": "",
+        "exception_msg": "",
+        "exception_traceback": "",
+        "input": [
+            {
+                "weight": 9,
+                "index": 0,
+                "value": 150
+            },
+            {
+                "weight": 4,
+                "index": 1,
+                "value": 50
+            },
+            {
+                "weight": 11,
+                "index": 2,
+                "value": 70
+            },
+            {
+                "weight": 15,
+                "index": 3,
+                "value": 60
+            },
+            {
+                "weight": 22,
+                "index": 4,
+                "value": 80
+            },
+            {
+                "weight": 50,
+                "index": 5,
+                "value": 160
+            },
+            {
+                "weight": 7,
+                "index": 6,
+                "value": 20
+            },
+            {
+                "weight": 13,
+                "index": 7,
+                "value": 35
+            },
+            {
+                "weight": 27,
+                "index": 8,
+                "value": 60
+            },
+            {
+                "weight": 43,
+                "index": 9,
+                "value": 75
+            },
+            {
+                "weight": 42,
+                "index": 10,
+                "value": 70
+            },
+            {
+                "weight": 153,
+                "index": 11,
+                "value": 200
+            },
+            {
+                "weight": 23,
+                "index": 12,
+                "value": 30
+            },
+            {
+                "weight": 39,
+                "index": 13,
+                "value": 40
+            },
+            {
+                "weight": 32,
+                "index": 14,
+                "value": 30
+            },
+            {
+                "weight": 18,
+                "index": 15,
+                "value": 12
+            },
+            {
+                "weight": 68,
+                "index": 16,
+                "value": 45
+            },
+            {
+                "weight": 24,
+                "index": 17,
+                "value": 15
+            },
+            {
+                "weight": 73,
+                "index": 18,
+                "value": 40
+            },
+            {
+                "weight": 30,
+                "index": 19,
+                "value": 10
+            },
+            {
+                "weight": 48,
+                "index": 20,
+                "value": 10
+            },
+            {
+                "weight": 52,
+                "index": 21,
+                "value": 10
+            }
+        ],
+        "capacity": 400.0,
+        "nitems": 22,
+        "result_weight": 396.0,
+        "result_value": 1030.0,
+        "result_items": [
+            {
+                "weight": 9,
+                "index": 0,
+                "name": "",
+                "value": 150
+            },
+            {
+                "weight": 4,
+                "index": 1,
+                "name": "",
+                "value": 50
+            },
+            {
+                "weight": 11,
+                "index": 2,
+                "name": "",
+                "value": 70
+            },
+            {
+                "weight": 15,
+                "index": 3,
+                "name": "",
+                "value": 60
+            },
+            {
+                "weight": 22,
+                "index": 4,
+                "name": "",
+                "value": 80
+            },
+            {
+                "weight": 50,
+                "index": 5,
+                "name": "",
+                "value": 160
+            },
+            {
+                "weight": 7,
+                "index": 6,
+                "name": "",
+                "value": 20
+            },
+            {
+                "weight": 13,
+                "index": 7,
+                "name": "",
+                "value": 35
+            },
+            {
+                "weight": 27,
+                "index": 8,
+                "name": "",
+                "value": 60
+            },
+            {
+                "weight": 43,
+                "index": 9,
+                "name": "",
+                "value": 75
+            },
+            {
+                "weight": 42,
+                "index": 10,
+                "name": "",
+                "value": 70
+            },
+            {
+                "weight": 153,
+                "index": 11,
+                "name": "",
+                "value": 200
+            }
+        ]
+    }
+},
+{
+    "model": "kaas.knapsacktask",
+    "pk": "cdcc15dc-0aac-440f-8cd0-7383959283ae",
+    "fields": {
+        "celery_task_id": "ac24dec0-e37f-48f3-86ab-1472638a3f6b",
+        "status": "SUCCESS",
+        "solver_type": "BRANCH_AND_BOUND",
+        "done": true,
+        "user": 2,
+        "task_created": "2017-02-10T16:09:25.237Z",
+        "task_solve_start": "2017-02-10T16:09:25.802Z",
+        "task_solve_end": "2017-02-10T16:09:25.820Z",
+        "task_total_duration": "00:00:00.583548",
+        "task_solution_duration": "00:00:00.018376",
+        "exception_class": "",
+        "exception_msg": "",
+        "exception_traceback": "",
+        "input": [
+            {
+                "weight": 4,
+                "index": 0,
+                "value": 8
+            },
+            {
+                "weight": 5,
+                "index": 1,
+                "value": 10
+            },
+            {
+                "weight": 8,
+                "index": 2,
+                "value": 15
+            },
+            {
+                "weight": 3,
+                "index": 3,
+                "value": 4
+            }
+        ],
+        "capacity": 10.0,
+        "nitems": 4,
+        "result_weight": 9.0,
+        "result_value": 18.0,
+        "result_items": [
+            {
+                "weight": 4,
+                "index": 0,
+                "name": "",
+                "value": 8
+            },
+            {
+                "weight": 5,
+                "index": 1,
+                "name": "",
+                "value": 10
+            }
+        ]
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2017-02-10T15:57:54.009Z",
+        "user": 1,
+        "content_type": 1,
+        "object_id": "2",
+        "object_repr": "tester",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2017-02-10T16:26:46.492Z",
+        "user": 1,
+        "content_type": 7,
+        "object_id": "998a95dd4b03a0edc5777bf89512ce60920455fa",
+        "object_repr": "998a95dd4b03a0edc5777bf89512ce60920455fa",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2017-02-10T16:26:46.493Z",
+        "user": 1,
+        "content_type": 7,
+        "object_id": "ff65d1ffba344b3004309fe24c02a24af8996802",
+        "object_repr": "ff65d1ffba344b3004309fe24c02a24af8996802",
+        "action_flag": 3,
+        "change_message": ""
+    }
+}
+]
