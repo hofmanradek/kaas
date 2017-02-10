@@ -1,7 +1,9 @@
 from django.db import models
-from jsonfield import JSONField
+import jsonfield
+
 from django.contrib.auth.models import User
 from datetime import timedelta
+import uuid
 
 #let's generate token for each new user
 from django.conf import settings
@@ -19,7 +21,8 @@ class KnapsackTask(models.Model):
     """
     Class representing database model for a Knapsack task
     """
-    task_id = models.CharField(max_length=36, blank=True)  # celery task id is UUID and has 36 chars
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    celery_task_id = models.CharField(max_length=36, blank=True)  # celery task id is UUID and has 36 chars
     status = models.CharField(max_length=20, default='CREATED')  # 'CREATED' -> 'INITIALIZING' -> 'SOLVING' -> `SUCCESS`/`FAILURE`
     solver_type = models.CharField(max_length=30, blank=True)  # string identificator of solver types
     done = models.BooleanField(default=False)  # taks solution ended, does not mean with SUCCESS
@@ -37,14 +40,14 @@ class KnapsackTask(models.Model):
     exception_traceback = models.TextField(blank=True)
 
     #inputs to our tasks
-    input = JSONField(default="{}")
+    input = jsonfield.JSONField(default='{}')
     capacity = models.FloatField(default=0.)
     nitems = models.IntegerField(default=0)
 
     #output - only if taks ends with 'SUCCESS' and returns, empty otherwise
     result_weight = models.FloatField(default=0.)
     result_value = models.FloatField(default=0.)
-    result_items = JSONField(blank=True)
+    result_items = jsonfield.JSONField(default='{}')
 
 
 

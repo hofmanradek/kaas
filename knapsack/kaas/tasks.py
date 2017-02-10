@@ -31,8 +31,9 @@ def task_driver(data, user):
     """
     solver_type = data.get('solver_type', SOLVER_DEFAULT)  # we have a default solver if not provided
     knapsack_data = data.get('knapsack_data')
+    print(knapsack_data)
     #we created a new task in database, in task we will update it on result
-    kt = KnapsackTask(#task_id=task_id,
+    kt = KnapsackTask(
             user=user,
             solver_type=solver_type,
             input=knapsack_data['items'],
@@ -44,18 +45,18 @@ def task_driver(data, user):
     #call of celery task
     result = solve_knapsack.delay(solver_type, knapsack_data, kt.id, init_kwargs={}, solve_kwargs={})
 
-    return result
+    return kt.id, result
 
 
 class LogTaskResult(Task):
     """
     Class implementing callbacks (mainly results persisting) for our celery task
     """
-    def on_failure(self, exc, task_id, args, kwargs, einfo):
+    def on_failure(self, exc, celery_task_id, args, kwargs, einfo):
         """
         What to do on celery task failure
         :param exc: The exception raised by the task.
-        :param task_id: Unique id of the failed task.
+        :param celery_task_id: Unique id of the failed task.
         :param args: Original arguments for the task that failed.
         :param kwargs: Original keyword arguments for the task that failed.
         :param einfo: ExceptionInfo instance, containing the traceback.
@@ -64,7 +65,7 @@ class LogTaskResult(Task):
         kt_id = args[2]
         #update on FAILURE status
         kt = KnapsackTask.objects.get(id=kt_id)
-        kt.task_id = task_id
+        kt.celery_task_id = celery_task_id
         kt.status = 'FAILURE'
         kt.done = True
         kt.exception_class = exc.__class__.__name__
@@ -75,10 +76,10 @@ class LogTaskResult(Task):
         kt.save()
 
 
-    def on_success(self, retval, task_id, args, kwargs):
+    def on_success(self, retval, celery_task_id, args, kwargs):
         """
         What to do on celery task success
-        :param retval: The return value of the task.
+        :param retval: The return value of the task (v, w, its['items'], solution_start, solution_end).
         :param task_id: Unique id of the executed task.
         :param args: Original arguments for the executed task.
         :param kwargs: Original keyword arguments for the executed task.
@@ -87,7 +88,7 @@ class LogTaskResult(Task):
         kt_id = args[2]
         #update in SUCCESS status
         kt = KnapsackTask.objects.get(id=kt_id)
-        kt.task_id = task_id
+        kt.celery_task_id = celery_task_id
         kt.status = 'SUCCESS'
         kt.done = True
         kt.result_value = retval[0]

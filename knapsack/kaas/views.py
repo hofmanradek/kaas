@@ -38,7 +38,7 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    tasks = KnapsackTask.objects.filter(user=request.user)[:100]
+    tasks = KnapsackTask.objects.filter(user=request.user).order_by('-task_created')[:100]
     return render(request,
                   'kaas/dashboard.html',
                   {'section': 'dashboard',

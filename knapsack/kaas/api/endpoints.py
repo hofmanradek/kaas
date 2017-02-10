@@ -1,23 +1,34 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import authentication, permissions
-from celery.result import AsyncResult
 
 from kaas.models import KnapsackTask
 from kaas.tasks import task_driver, solve_knapsack, SOLVER_TYPES, SOLVER_DEFAULT
+from kaas.api.serializers import KnapsackTaskSerializer
 
 
-class SolveKnapsackAPI(APIView):
+class KnapsackTaskListAPI(APIView):
     """
-    Api accepting kanpsack problems to put in Celery queue to be solved
+    API for list of knapsack tasks of current user (GET, POST)
     """
     authentication_classes = (authentication.TokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (permissions.IsAuthenticated,)
 
+    def get(self, request):
+        """
+        GET handler
+        :param task_id: knapsack task id
+        :return: serialized tasks json (newest first) and HTTP_200_OK, 404 if task not exist
+        """
+        tasks = KnapsackTask.objects.filter(user=request.user).order_by('-task_created')
+        serializer = KnapsackTaskSerializer(tasks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request):
         """
-        API endpoit for submitting new task
+        POST handler
         Accepts media type 'application/json' data of the following format:
         {
             "solver_type": "DYNAMIC_PROG",
@@ -39,36 +50,37 @@ class SolveKnapsackAPI(APIView):
                 ]
             }
         }
-        :return: Celery task_id for further tracking
+        :return: Celery task_id for further tracking and HTTP_201_CREATED if valid input,
+                HTTP_400_BAD_REQUEST and reason otherwise
         """
-        result = task_driver(request.data, request.user)
-        return Response({'task_id': result.task_id}, status=status.HTTP_201_CREATED)
+        knapsack_task_id, result = task_driver(request.data, request.user)
+        return Response({'id': knapsack_task_id, 'celery_task_id': result.task_id}, \
+                        status=status.HTTP_201_CREATED)
 
 
-class TaskInfoAPI(APIView):
+class KnapsackTaskDetailAPI(APIView):
     """
-    Api for celery task info
+    API for a single knapsack task (GET, DELETE)
     """
     authentication_classes = (authentication.TokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (permissions.IsAuthenticated,)
 
-
     def get(self, request, task_id):
         """
-        API endpoint for getting Celery task info
-        :param request:
-        :return:
+        GET handler
+        :param task_id: knapsack task id
+        :return: serialized task json (newest first) and HTTP_200_OK, 404 if task not exist
         """
+        task = get_object_or_404(KnapsackTask, id=task_id, user=request.user)
+        serializer = KnapsackTaskSerializer(task)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-        c_task = AsyncResult(task_id)
-        retdata = {'task_id': task_id,
-                   'status': c_task.status
-                   }
-
-        if c_task.status == 'SUCCESS':
-            retdata['result'] = {}
-            retdata['result']['total_value'] = c_task.result[0]
-            retdata['result']['total_weight'] = c_task.result[1]
-            retdata['result']['selected_items'] = c_task.result[2]
-
-        return Response(retdata, status=status.HTTP_200_OK)
+    def delete(self, request, task_id):
+        """
+        DELETE handler
+        :param task_id: knapsack task id
+        :return: HTTP_204_NO_CONTENT or 404 if task not exists
+        """
+        task = get_object_or_404(KnapsackTask, id=task_id, user=request.user)
+        task.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
