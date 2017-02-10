@@ -3,10 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import authentication, permissions
+from django.core.exceptions import ValidationError
 
 from kaas.models import KnapsackTask
 from kaas.tasks import task_driver, solve_knapsack, SOLVER_TYPES, SOLVER_DEFAULT
 from kaas.api.serializers import KnapsackTaskSerializer
+from kaas.forms import knapsack_textarea_field_validation
 
 
 class KnapsackTaskListAPI(APIView):
@@ -53,9 +55,14 @@ class KnapsackTaskListAPI(APIView):
         :return: Celery task_id for further tracking and HTTP_201_CREATED if valid input,
                 HTTP_400_BAD_REQUEST and reason otherwise
         """
-        knapsack_task_id, result = task_driver(request.data, request.user)
-        return Response({'id': knapsack_task_id, 'celery_task_id': result.task_id}, \
-                        status=status.HTTP_201_CREATED)
+        try:
+            knapsack_textarea_field_validation(request.data)
+        except ValidationError as e:
+            return Response({'error': e}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            knapsack_task_id, result = task_driver(request.data, request.user)
+            return Response({'id': knapsack_task_id, 'celery_task_id': result.task_id}, \
+                            status=status.HTTP_201_CREATED)
 
 
 class KnapsackTaskDetailAPI(APIView):
