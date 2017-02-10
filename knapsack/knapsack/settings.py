@@ -35,9 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'kaas',
     'rest_framework',
     'rest_framework.authtoken',
-    'kaas',
     'django.contrib.admin',  # because of custom logout page must come after our application
 ]
 

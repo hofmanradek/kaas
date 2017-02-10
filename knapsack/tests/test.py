@@ -1,4 +1,5 @@
-import unittest
+#import unittest
+from django.test import TestCase
 import os
 
 from kaas.solvers.datastore import Datastore
@@ -10,7 +11,7 @@ THIS_MODULE_PATH = os.path.dirname(__file__)
 TEST_FILE_PATH = os.path.join(THIS_MODULE_PATH, "data", "ks_22.json")
 
 
-class TestDatastore(unittest.TestCase):
+class TestDatastore(TestCase):
     """
     Tests for datastore module
     """
@@ -34,7 +35,7 @@ class TestDatastore(unittest.TestCase):
         assert ds.items[ds.nitems-1].density == 5/26
 
 
-class TestSolvers(unittest.TestCase):
+class TestSolvers(TestCase):
 
     def setUp(self):
         self.ds = Datastore(sorted=True)
