@@ -72,7 +72,6 @@ class LogTaskResult(Task):
         kt.exception_msg = str(exc).strip()
         kt.exception_traceback = str(einfo).strip()
         kt.task_total_duration = datetime.now(timezone.utc) - kt.task_created  # just approximate value - time to failure:)
-        kt.task_total_duration = datetime.now(timezone.utc) - kt.task_created  # just approximate value - time to failure:)
         kt.save()
 
 
