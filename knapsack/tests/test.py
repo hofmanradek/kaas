@@ -155,6 +155,10 @@ class TestApi(TestCase):
         """
         test of POST
         """
+        #here we must switch celery to eager mode so the task is executed directly
+        from knapsack import celery
+        celery.app.conf.CELERY_ALWAYS_EAGER = True
+
         url = reverse('api_task_list')
         data={"solver_type": "BRANCH_AND_BOUND", "knapsack_data": { "num_items": 2, "capacity": 10, "items": [ { "index": 0, "value": 8, "weight": 4 }, { "index": 1, "value": 10, "weight": 5 } ] } }
         response = self.client_authorized.post(url, format='json', data=data)
@@ -162,6 +166,13 @@ class TestApi(TestCase):
         res_json = response.json()
         self.assertTrue('id' in res_json.keys())
         self.assertTrue('celery_task_id' in res_json.keys())
+
+        #let's check if we get the right answer
+        url = reverse('api_task_detail', args=(res_json['id'],))
+        response = self.client_authorized.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        res_json = response.json()
+        self.assertEqual(res_json['result_value'], 18)
 
         #unauthorized user
         response = self.client_unauthorized.post(url, format='json', data=data)
