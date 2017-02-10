@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',  # because of custom logout page must come after our application
+    'django_nose'
 ]
 
 MIDDLEWARE = [
@@ -114,6 +115,13 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=kaas'
+]
 
 
 # Static files (CSS, JavaScript, Images)

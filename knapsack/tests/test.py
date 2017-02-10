@@ -1,4 +1,3 @@
-#import unittest
 from django.test import TestCase
 import os
 
@@ -36,7 +35,9 @@ class TestDatastore(TestCase):
 
 
 class TestSolvers(TestCase):
-
+    """
+    Test for all availbale solvers
+    """
     def setUp(self):
         self.ds = Datastore(sorted=True)
         self.ds.load_from_json_file(TEST_FILE_PATH)
@@ -110,6 +111,5 @@ class TestSolvers(TestCase):
         sbb.solve()
         assert sbb.tweight == 396
         assert sbb.tvalue == 1030
-
 
 
