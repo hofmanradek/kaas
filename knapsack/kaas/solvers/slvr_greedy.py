@@ -11,10 +11,10 @@ class SolverGreedy(SolverBase):
 
         self.fract = fractional  # do we assume fractional Greegy? (good for relaxation in Branch and Bound)
 
-        if not self.ds.sorted:
-            raise("not sorted datastore")
+        if not self.ds.sorted:  # this solver requires sorted items
+            self.ds.set_sorted()
 
-    def solve(self, level=0, w_offset=0., v_offset=0.):
+    def _solve(self, level=0, w_offset=0., v_offset=0.):
         """
         Greedy solution algorithm of Knapsack problem
          - we can use it as a relaxation approximation in Brand and Bound

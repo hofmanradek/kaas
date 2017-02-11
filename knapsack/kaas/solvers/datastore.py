@@ -48,6 +48,10 @@ class Datastore(object):
         """
         return sorted(items, key=lambda x: x.density, reverse=True)
 
+    def set_sorted(self):
+        self.sorted = True
+        self.items = self.sort_by_value_density(self.items)
+
     def load_from_json(self, data_json):
         """
         loads data from json
@@ -80,7 +84,7 @@ class Datastore(object):
             self.items.append(Item(item['value'], item['weight'], item['index'], name))
 
         if self.sorted:
-            self.items = self.sort_by_value_density(self.items)
+            self.set_sorted()
 
     def load_from_json_str(self, s):
         """

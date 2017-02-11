@@ -60,7 +60,7 @@ class TestSolvers(TestCase):
         assert sgreedy.ds.nitems == 22
 
         #test of solver
-        sgreedy.solve()
+        sgreedy.run()
         assert sgreedy.tweight == 396
         assert sgreedy.tvalue == 1030
 
@@ -74,7 +74,7 @@ class TestSolvers(TestCase):
         assert sgreedy.ds.nitems == 22
 
         #test of solver
-        sgreedy.solve()
+        sgreedy.run()
         assert sgreedy.tweight == 400
         assert sgreedy.tvalue == 1035.2173913043478
 
@@ -87,7 +87,7 @@ class TestSolvers(TestCase):
         assert sdpr.ds.nitems == 22
 
         #test of solver
-        sdpr.solve()
+        sdpr.run()
         assert sdpr.tweight == 396
         assert sdpr.tvalue == 1030
 
@@ -100,7 +100,7 @@ class TestSolvers(TestCase):
         assert sdpr.ds.nitems == 22
 
         #test of solver
-        sdpr.solve(lru_cache_maxsize=None)
+        sdpr.run(lru_cache_maxsize=None)
         assert sdpr.tweight == 396
         assert sdpr.tvalue == 1030
 
@@ -113,7 +113,7 @@ class TestSolvers(TestCase):
         assert sbb.ds.nitems == 22
 
         #test of solver
-        sbb.solve()
+        sbb.run()
         assert sbb.tweight == 396
         assert sbb.tvalue == 1030
 

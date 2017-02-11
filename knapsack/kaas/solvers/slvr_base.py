@@ -12,7 +12,7 @@ class SolverBase(metaclass=ABCMeta):
         self.tvalue = 0.  # total value
         self.tweight = 0.  # total weight
 
-    def solve_knapsack(self):
+    def run(self, *args, **kwargs):
         """
         auxiliary function performing tests on trivial solutions and solution
         :return:
@@ -23,10 +23,10 @@ class SolverBase(metaclass=ABCMeta):
             self.tvalue = sum([x.value for x in self.ds.items])
             self.tweight = sum([x.weight for x in self.ds.items])
         else:  # non-trivial solution - we have to find it
-            self.solve()
+            self._solve(*args, **kwargs)
 
     @abstractmethod
-    def solve(self):
+    def _solve(self):
         """
         this method must be implemented for various solver types
         saves total value of items in self.tvalue, total weight in

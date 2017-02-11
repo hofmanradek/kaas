@@ -8,7 +8,7 @@ class SolverDynamic(SolverBase):
     """
     Solver class for Dynamic programming
     """
-    def solve(self):
+    def _solve(self):
         t = [[0 for i in range(self.ds.capacity+1)] for j in range(self.ds.nitems+1)]  #numpy.zeros((self.ds.nitems+1, self.ds.capacity))
 
         for m in range(1, self.ds.nitems+1):
@@ -34,7 +34,7 @@ class SolverDynamicRecurrent(SolverBase):
     """
     Solver class for Dynamic programming using recurrent formula
     """
-    def solve(self, lru_cache_maxsize=None):
+    def _solve(self, lru_cache_maxsize=None):
         """
         Recurrent Dynamic Programing (DP) solution algorithm of Knapsack problem
         :param lru_cache_maxsize: maximum number of entries store in cache (None = no limit)

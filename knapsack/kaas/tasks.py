@@ -31,7 +31,6 @@ def task_driver(data, user):
     """
     solver_type = data.get('solver_type', SOLVER_DEFAULT)  # we have a default solver if not provided
     knapsack_data = data.get('knapsack_data')
-    print(knapsack_data)
     #we created a new task in database, in task we will update it on result
     kt = KnapsackTask(
             user=user,
@@ -127,7 +126,7 @@ def solve_knapsack(self, solver_type, knapsack_data, kt_id, init_kwargs={}, solv
 
     self.update_state(state='SOLVING')
 
-    solver.solve()
+    solver.run()
     v = solver.tvalue
     w = solver.tweight
     its = solver.get_item_json()

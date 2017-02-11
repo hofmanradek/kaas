@@ -6,6 +6,13 @@ class BranchAndBoundSolver(SolverBase):
     """
     class of Branch and Bound Knapsack solver
     """
+    def __init__(self, *args, **kwargs):
+        "this solver takes more inputs than the rest, we have to extend constructor"
+        super(self.__class__, self).__init__(*args, **kwargs)
+
+        if not self.ds.sorted:  # this solver requires sorted items
+            self.ds.set_sorted()
+
     class Node(object):
         """
         Class of node of the tree built during Branch&Bound solution
@@ -25,7 +32,7 @@ class BranchAndBoundSolver(SolverBase):
             :return: upper bound given by Greedy fractional solver
             """
             sgreedy = SolverGreedy(self.ds, fractional=True)
-            sgreedy.solve(level=self.level, w_offset=self.cumul_weight, v_offset=self.cumul_value)
+            sgreedy.run(level=self.level, w_offset=self.cumul_weight, v_offset=self.cumul_value)
             return sgreedy.tvalue
 
         def go(self):
@@ -47,7 +54,7 @@ class BranchAndBoundSolver(SolverBase):
                                                  self.cumul_value, self.ds, self.knapsack))
             return ret
 
-    def solve(self):
+    def _solve(self):
         root = self.Node(0, 0, 0, self.ds, [])
         current_node = root
         nodes_to_go = []
