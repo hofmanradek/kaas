@@ -12,6 +12,19 @@ class SolverBase(metaclass=ABCMeta):
         self.tvalue = 0.  # total value
         self.tweight = 0.  # total weight
 
+    def solve_knapsack(self):
+        """
+        auxiliary function performing tests on trivial solutions and solution
+        :return:
+        """
+        if self.ds.test_trivial_0():
+            pass  # both self.tvalue and self.tweight are zero
+        elif self.ds.test_trivial_1():  # all items fit in
+            self.tvalue = sum([x.value for x in self.ds.items])
+            self.tweight = sum([x.weight for x in self.ds.items])
+        else:  # non-trivial solution - we have to find it
+            self.solve()
+
     @abstractmethod
     def solve(self):
         """

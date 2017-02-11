@@ -100,3 +100,17 @@ class Datastore(object):
         with open(file_path, 'r') as f:
             s = f.read()
             self.load_from_json_str(s)
+
+    def test_trivial_0(self):
+        """
+        Test on trivial solution: all items heavier than knapsack capacity
+        :return: true if condition for trivial solution holds
+        """
+        return min([x.weight for x in self.items]) > self.capacity
+
+    def test_trivial_1(self):
+        """
+        Test on trivial solution: sum of all items' weights <= capacity - all fit in
+        :return: true if condition for trivial solution holds
+        """
+        return sum([x.weight for x in self.items]) <= self.capacity
