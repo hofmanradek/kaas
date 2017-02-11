@@ -41,30 +41,42 @@ class BranchAndBoundSolver(SolverBase):
             """
             ret = []  # empty list for return values
 
-            if (self.ds.items[self.level].weight + self.cumul_weight <= self.ds.capacity):
-                item = self.ds.items[self.level]  # auxiliary variable
-                ret.append(BranchAndBoundSolver.Node(item.weight + self.cumul_weight,  # we create a new left node - we take the item
-                                self.level + 1,
-                                item.value + self.cumul_value,
-                                self.ds,
-                                self.knapsack+[self.ds.items[self.level]]))
+            if self.level < self.ds.nitems:
+                if (self.ds.items[self.level].weight + self.cumul_weight <= self.ds.capacity):
+                    item = self.ds.items[self.level]  # auxiliary variable
+                    ret.append(BranchAndBoundSolver.Node(item.weight + self.cumul_weight,  # we create a new left node - we take the item
+                                                         self.level + 1,
+                                                         item.value + self.cumul_value,
+                                                         self.ds,
+                                                         self.knapsack+[self.ds.items[self.level]]))
 
-            #right child we create always - we try to omit the item
-            ret.append(BranchAndBoundSolver.Node(self.cumul_weight, self.level + 1, \
-                                                 self.cumul_value, self.ds, self.knapsack))
+                #right child we create always - we try to omit the item
+                ret.append(BranchAndBoundSolver.Node(self.cumul_weight, self.level + 1, \
+                                                     self.cumul_value, self.ds, self.knapsack))
             return ret
 
-    def _solve(self):
+    def _solve(self, priority=False):
+        q = []  # we simulate priority queue
         root = self.Node(0, 0, 0, self.ds, [])
-        current_node = root
-        nodes_to_go = []
+        q.append((root.ubound, root))
 
-        while current_node.level < self.ds.nitems:
+        best_node = root
+
+        while q:
+            ubound, current_node = q.pop()
+
+            if current_node.cumul_value > best_node.cumul_value:
+                best_node = current_node
+
             new_nodes = current_node.go()
-            nodes_to_go.extend(new_nodes)
-            nodes_to_go.sort(key=lambda x: x.ubound)
-            current_node = nodes_to_go.pop()
 
-        self.knapsack = current_node.knapsack
-        self.tweight = current_node.cumul_weight
-        self.tvalue = current_node.cumul_value
+            for node in new_nodes:
+                if node.ubound > best_node.cumul_value:
+                    q.append((node.ubound, node))  # it puts smallest first, we have to negate to get largest:)
+
+            q.sort(key=lambda x: x[0])  # the last one is the one with highest upper_bound
+
+
+        self.knapsack = best_node.knapsack
+        self.tweight = best_node.cumul_weight
+        self.tvalue = best_node.cumul_value
