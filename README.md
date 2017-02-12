@@ -15,8 +15,8 @@ KaaS is a Django base application with distributed task queue Celery on the back
 
 *  [**Greedy approximation**](https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm). This algorithm yields a suboptimal solution but it is fast and for most of real world problems it is not far from the true optimum. Internally, our Greedy solver tackles both 0/1 and fractional Knapsack and we use it in our other solver Branch and Bound to get an upper bound for the optimal value of the original
 problem
-* [**Dynamic Programming**](https://en.wikipedia.org/wiki/Knapsack_problem#Dynamic_programming_in-advance_algorithm) in a classical and reccurent versions. This algorithm provides optimal solution. It can be used only for problems with integer weights and for problems with large knapsack capacity or large number of items becomes computationally prohibitive.
-* [**Branch and Bound**](https://en.wikipedia.org/wiki/Branch_and_bound) with fractional Greedy relaxation. This algorithm provides optimal solution and works even with non-integer weights. Branch and Bound does a complete search of all possible subsets but those which are identified as worse than the current best one are neglected. This leads to a great reduction of subsets which have to evaluated. Unfortunatelly, it can happen that the structure of the data leads to exponential complexity, see Section **Results** for examples.
+* [**Dynamic Programming**](https://en.wikipedia.org/wiki/Knapsack_problem#Dynamic_programming_in-advance_algorithm) in a classical and recurrent versions. This algorithm provides optimal solution. It can be used only for problems with integer weights and for problems with large knapsack capacity or large number of items becomes computationally prohibitive.
+* [**Branch and Bound**](https://en.wikipedia.org/wiki/Branch_and_bound) with fractional Greedy relaxation. This algorithm provides optimal solution and works even with non-integer weights. Branch and Bound does a complete search of all possible subsets but those which are identified as worse than the current best one are neglected. This leads to a great reduction of subsets which have to evaluated. Unfortunately, it can happen that the structure of the data leads to exponential complexity, see Section **Solving Sample Knapsacks** for examples.
 
 Each solver is represented by its *class* in `/knapsack/kaas/solvers`. All solvers are inherited from the the base *class* `SolverBase`. This class defines a common interface for all solvers a facilitates:
 
@@ -27,10 +27,10 @@ Each solver is represented by its *class* in `/knapsack/kaas/solvers`. All solve
 	 - sum of all items' weights is less or equal to knapsack capacity => all fit in,
 * and some other infrastructure tasks common to all solvers. 
 
-Implementation of abstract method `SolverBase._solve()` which does the knapsack solution iteself is the place where the solvers differ. This method must be implemented if you decide to code your own solver.
+Implementation of abstract method `SolverBase._solve()` which does the knapsack solution itself is the place where the solvers differ. This method must be implemented if you decide to code your own solver.
 
 #### Data Ingestion and Validation ####
-Tasks are defined using a JSON structure. This structure is common for web and REST API interfaces. Example follows (we hope that the structure is more or less selfexplanatory):
+Tasks are defined using a JSON structure. This structure is common for web and REST API interfaces. Example follows (we hope that the structure is more or less self-explanatory):
 
 ```
 {"solver_type": "BRANCH_AND_BOUND",
@@ -74,19 +74,19 @@ Task structure is thoroughly validated on input via web or REST API endpoint. We
 }
 ``` 
 
-#### Persisiting of Results ####
+#### Persisting of Results ####
 
-KaaS supports user accounts. User must authenticate to use web and REST API interfaces. More details on user authentication can be found in dedicated sections of this document. This enables us to monitor and control usage of the application and provides us means to keep track of user accounts and taks of respective users. All taks are persisted in relational DB using `KnapsackTask` DB model reflecting task structure above plus additional information including:
+KaaS supports user accounts. User must authenticate to use web and REST API interfaces. More details on user authentication can be found in dedicated sections of this document. This enables us to monitor and control usage of the application and provides us means to keep track of user accounts and tasks of respective users. All tasks are persisted in relational DB using `KnapsackTask` DB model reflecting task structure above plus additional information including:
 
 * celery_task_id
 * User: Django User object
 * status (`CRATED`, `SUCCESS`, `FAILURE`)
 * task inputs and outputs: `solver_type`, `inputs`, `results` if `status` == `SUCCESS`
-* Detail description of exception which occured during celery execution (if `status` == `FAILURE`): 
+* Detail description of exception which occurred during celery execution (if `status` == `FAILURE`): 
 	- `exception_class`, 
 	- `exception_msg`, 
 	- `exception_traceback`
-* various time related atriutes: 
+* various time related attributes: 
     - `task_created`: timestamp when user created the task (either via web or API)
     - `task_solve_start`, `task_solve_end`
     - `task_total_duration`: total time spent since submission
@@ -96,9 +96,9 @@ More or getting results via web and API interfaces can be found in Section **Use
 
 ## Installation ##
 
-#### Prerequisities: ####
+#### Prerequisites: ####
 
-Please make sure that the following prerequisities are met before you proceed to kaas installation:
+Please make sure that the following prerequisites are met before you proceed to KaaS installation:
 
 * [RabbitMQ](https://www.rabbitmq.com/)
 * [Python3](https://www.python.org/downloads/)
@@ -111,7 +111,7 @@ Please make sure that the following prerequisities are met before you proceed to
 * Clone code from repository: `git clone https://radekhofman@bitbucket.org/radekhofman/kaas.git`
 * In the project folder (or elsewhere where it is convenient for you) create a new Python3 based virualenv: `virtualenv env -p python3`
 * Activate viartual env: `source env/bin/activate`
-* Install all Python packages required by the project. In the project root execute `pip install -r requirements.txt`
+* Install all Python packages required by the project. In the project root (`kaas/knapsack/`) execute `pip install -r requirements.txt`
 * Do database migration: `python manage.py migrate`
 * Now you can start Django server which provides web and REST API interfaces: `python manage.py runserver`. Output should be as follows (depending on your terminal type):
 
@@ -127,8 +127,8 @@ Quit the server with CONTROL-C.
 ```
 
 * The last step is to start celery worker which does all the heavy work:) 
-     - Before you proceed please make sure your RabbitMQ server is running. Either run `rabbitmq-server` or statrt RabbitMQ as a service. To verify you can try [http://localhost:5672](http://localhost:5672) i your browser and the url should offer you a file to download with text `AMQP` as its content.
-     - We have a dedicated celery queue called `knapsack_solvers`. In a new terminal window in kaas root start a new celery worker listening on that queue using `celery worker -A knapsack -l info -Q knapsack_solvers`
+     - Before you proceed please make sure your RabbitMQ server is running. Either run `rabbitmq-server` or start RabbitMQ as a service. To verify you can try [http://localhost:5672](http://localhost:5672) i your browser and the url should offer you a file to download with text `AMQP` as its content.
+     - We have a dedicated celery queue called `knapsack_solvers`. In a new terminal window in KaaS project root (`kaas/knapsack/`) start a new celery worker listening on that queue using `celery worker -A knapsack -l info -Q knapsack_solvers`
 
 ```
  -------------- celery@panda.local v4.0.2 (latentcall)
@@ -197,11 +197,26 @@ Destroying test database for alias 'default'...
 
 ### Web Interface ###
 
-Locally, web interface can be assessed on `http://localhost:[PORT]/` (PORT is 8000 by default). 
+Locally, web interface can be assessed on `http://localhost:[PORT]/` (PORT is 8000 by default). It is a responsive web page based on Bootstrap and Django forms. 
+
+To register and run your first Knapsack task please follow steps listed bellow:
+
+1. Go to `http://localhost:8000` and press `Sign up today`
+![Screen Shot 2017-02-12 at 23.45.17.png](https://bitbucket.org/repo/9x78dR/images/2094379485-Screen%20Shot%202017-02-12%20at%2023.45.17.png) 
+2. What appears is a User creation form which you fill
+![Screen Shot 2017-02-12 at 23.46.08.png](https://bitbucket.org/repo/9x78dR/images/3416623992-Screen%20Shot%202017-02-12%20at%2023.46.08.png)
+3. After successful registration message use Login form to log in the app
+![Screen Shot 2017-02-12 at 23.46.47.png](https://bitbucket.org/repo/9x78dR/images/2694745354-Screen%20Shot%202017-02-12%20at%2023.46.47.png)
+4. After successful login you land on Dashboard which is empty until you submit a task. To do so please press `Solve knapsack` in top navigation bar and this brings you to a task submission page:
+![Screen Shot 2017-02-12 at 23.52.17.png](https://bitbucket.org/repo/9x78dR/images/2842750772-Screen%20Shot%202017-02-12%20at%2023.52.17.png)
+5. There are three tabs. First with the Knapsack JSON format, second with web submission form and the third with description of REST API and your personal REST API Token. Copy sample task JSON into the clipboard and go to the second tab `Web JSON input`. Paste task JSON into the text area and press `Solve`. Success message on green background should appear over the text area. **Your first knapsack task just has been submitted!**
+![Screen Shot 2017-02-12 at 23.56.13.png](https://bitbucket.org/repo/9x78dR/images/1775174709-Screen%20Shot%202017-02-12%20at%2023.56.13.png)
+6. Now you can go back do `Dashboard` and see that it is no empty no more. There are results of your first task. Congrats:)
+![Screen Shot 2017-02-12 at 23.58.47.png](https://bitbucket.org/repo/9x78dR/images/3641525083-Screen%20Shot%202017-02-12%20at%2023.58.47.png)
 
 ### Rest API ###
 
-REST API consists of a set of endopoints for task submission and results retrieving. 
+REST API consists of a set of endpoints for task submission and results retrieving. 
 
 #### API Authentication ####
 
@@ -257,9 +272,9 @@ GET /api/v1/tasks/
 This endpoint provide a list of user's tasks. To achieve pagination of results use `/api/v1/tasks/?start=S&limit=L` to get slice [S:S+L] (default is [0:10] - first ten results).
 
 
-In following response we see two tasks, one successful with its resuls and the other which failed with its error messages (this is just a simulated error:). 
+In following response we see two tasks, one successful with its results and the other which failed with its error messages (this is just a simulated error:). 
 
-This endpoint does not provide nor task input items neither a set of items selected as optimal. This can be retrieved by task detail enpoint described later.
+This endpoint does not provide nor task input items neither a set of items selected as optimal. This can be retrieved by task detail endpoint described later.
 
 **Response:**
 
@@ -319,7 +334,7 @@ Vary: Accept
 POST /api/v1/tasks/
 ```
 
-This endpoint server for submission of new task. Task JSON structure is send via post as `application/json` mime type. In the response we get `id` which is taks id in our database and we can use it later to retrieve task details and results. `celery_task_id` is for debugging purposes - it is Celery task id.
+This endpoint server for submission of new task. Task JSON structure is send via post as `application/json` mime type. In the response we get `id` which the is tasks id in our database and we can use it later to retrieve task details and results. `celery_task_id` is for debugging purposes - it is Celery task id.
 
 **Response:**
 
@@ -418,7 +433,7 @@ Vary: Accept
 
 ## Solving Sample Knapsacks ##
 
-In this Section we provide results obtained with test data included in the project in `/tests/data/sample_inputs`. `Dynamic programming` solvers are infesible for datasets with large knapsack capacity (because memory and computational complexity is then proportional to `nitems*capacity`). 
+In this Section we provide results obtained with test data included in the project in `/tests/data/sample_inputs`. `Dynamic programming` solvers are infeasible for datasets with large knapsack capacity (because memory and computational complexity is then proportional to `nitems*capacity`). 
 
 You can observe that Greedy suboptimal solver always found a good solution in rather short time compared to optimal solvers.
 
