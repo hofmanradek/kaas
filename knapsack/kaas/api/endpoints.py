@@ -15,6 +15,7 @@ class KnapsackTaskListAPI(APIView):
     """
     API for list of knapsack tasks of current user (GET, POST)
       - To achieve pagination of results during GET, use ?start=S&limit=L to get slice [S:S+L]
+      - default: [0:10]
     """
     authentication_classes = (authentication.TokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (permissions.IsAuthenticated,)
@@ -25,12 +26,8 @@ class KnapsackTaskListAPI(APIView):
         :param task_id: knapsack task id
         :return: serialized tasks json (newest first) and HTTP_200_OK, 404 if task not exist
         """
-        try:
-            start = int(request.GET['start'])
-            limit = int(request.GET['limit'])
-        except:
-            start = 0
-            limit = 10
+        start = int(request.GET.get('start', 0))
+        limit = int(request.GET.get('limit', 10))
 
         tasks = KnapsackTask.objects.filter(user=request.user).order_by('-task_created')[start:start+limit]
         serializer = KnapsackTaskSerializer(tasks, many=True)
