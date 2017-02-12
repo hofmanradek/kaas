@@ -216,7 +216,7 @@ To register and run your first Knapsack task please follow steps listed bellow:
 
 ### Rest API ###
 
-REST API consists of a set of endpoints for task submission and results retrieving. 
+REST API consists of a set of endpoints for task submission and results retrieving. Django Rest Framework also offers nice webviews for all APIs. To use then you must be logged in the web app and access API endpoints in your browser.
 
 #### API Authentication ####
 
@@ -319,7 +319,7 @@ Vary: Accept
         "solution_duration_sec": 0.0,
         "exception_class": "TypeError",
         "exception_msg": "'<' not supported between instances of 'Node' and 'Node'",
-        "exception_traceback": "Traceback (most recent call last):\n  File \"/Users/panda/twisto/kaas/env/lib/python3.6/site-packages/celery/app/trace.py\", line 367, in trace_task\n    R = retval = fun(*args, **kwargs)\n  File \"/Users/hofmanr/twisto/kaas/env/lib/python3.6/site-packages/celery/app/trace.py\", line 622, in __protected_call__\n    return self.run(*args, **kwargs)\n  File \"/Users/panda/twisto/kaas/knapsack/kaas/tasks.py\", line 129, in solve_knapsack\n    solver.run()\n  File \"/Users/panda/twisto/kaas/knapsack/kaas/solvers/slvr_base.py\", line 26, in run\n    self._solve(*args, **kwargs)\n  File \"/Users/hofmanr/twisto/kaas/knapsack/kaas/solvers/slvr_bb_prty.py\", line 82, in _solve\n    q.sort()\nTypeError: '<' not supported between instances of 'Node' and 'Node'",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/Users/panda/twisto/kaas/env/lib/python3.6/site-packages/celery/app/trace.py\", line 367, in trace_task\n    R = retval = fun(*args, **kwargs)\n  File \"/Users/panda/twisto/kaas/env/lib/python3.6/site-packages/celery/app/trace.py\", line 622, in __protected_call__\n    return self.run(*args, **kwargs)\n  File \"/Users/panda/twisto/kaas/knapsack/kaas/tasks.py\", line 129, in solve_knapsack\n    solver.run()\n  File \"/Users/panda/twisto/kaas/knapsack/kaas/solvers/slvr_base.py\", line 26, in run\n    self._solve(*args, **kwargs)\n  File \"/Users/panda/twisto/kaas/knapsack/kaas/solvers/slvr_bb_prty.py\", line 82, in _solve\n    q.sort()\nTypeError: '<' not supported between instances of 'Node' and 'Node'",
         "capacity": 9486367.0,
         "nitems": 400,
         "result_weight": 0.0,
