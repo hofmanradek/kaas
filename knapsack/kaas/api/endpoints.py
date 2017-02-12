@@ -7,13 +7,14 @@ from django.core.exceptions import ValidationError
 
 from kaas.models import KnapsackTask
 from kaas.tasks import task_driver, solve_knapsack, SOLVER_TYPES, SOLVER_DEFAULT
-from kaas.api.serializers import KnapsackTaskSerializer
+from kaas.api.serializers import KnapsackTaskSerializer, KnapsackTaskDetailSerializer
 from kaas.forms import knapsack_textarea_field_validation
 
 
 class KnapsackTaskListAPI(APIView):
     """
     API for list of knapsack tasks of current user (GET, POST)
+      - To achieve pagination of results during GET, use ?start=S&limit=L to get slice [S:S+L]
     """
     authentication_classes = (authentication.TokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (permissions.IsAuthenticated,)
@@ -24,7 +25,14 @@ class KnapsackTaskListAPI(APIView):
         :param task_id: knapsack task id
         :return: serialized tasks json (newest first) and HTTP_200_OK, 404 if task not exist
         """
-        tasks = KnapsackTask.objects.filter(user=request.user).order_by('-task_created')
+        try:
+            start = int(request.GET['start'])
+            limit = int(request.GET['limit'])
+        except:
+            start = 0
+            limit = 10
+
+        tasks = KnapsackTask.objects.filter(user=request.user).order_by('-task_created')[start:start+limit]
         serializer = KnapsackTaskSerializer(tasks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -79,7 +87,7 @@ class KnapsackTaskDetailAPI(APIView):
         :return: serialized task json (newest first) and HTTP_200_OK, 404 if task not exist
         """
         task = get_object_or_404(KnapsackTask, id=task_id, user=request.user)
-        serializer = KnapsackTaskSerializer(task)
+        serializer = KnapsackTaskDetailSerializer(task)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, task_id):
